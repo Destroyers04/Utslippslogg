@@ -27,8 +27,8 @@ Generer rapporter for internbruk eller innsending til myndigheter.
   - Konsulenter som utfører miljøanalyser
 
 ### Referanser
-- https://www.miljodirektoratet.no/hoeringer/2024/desember-2024/speira-recycling-services-raudsand-soker-om-a-oke-de-eksisterende-langtidsgrensene-for-utslipp-til-luft-av-ammoniakk-og-fosfin/](https://www.miljodirektoratet.no/ansvarsomrader/forurensning/industri/for-naringsliv/forventninger-til-industriens-utslippskontroll/
-  
+- https://www.miljodirektoratet.no/publikasjoner/2014/februar-2014/veiledning-til-egenkontrollrapportering/
+
 ## Krav
 Hva er kjernekravene til programmet? 
 	- Hvilke krav har brukerne?
@@ -46,5 +46,5 @@ Hva er kjernekravene til programmet?
 		- Lage rapporter
 
 ## Techstack being used
-- Frontend = React + Typescript+ Tailwind
+- Frontend = React + Typescript + Tailwind
 - Backend = Fastapi + Python
