@@ -27,7 +27,7 @@ Generer rapporter for internbruk eller innsending til myndigheter.
   - Konsulenter som utfører miljøanalyser
 
 ### Referanser
-- [Miljødirektoratetveileder for årlig rapportering]([https://www.miljodirektoratet.no/hoeringer/2024/desember-2024/speira-recycling-services-raudsand-soker-om-a-oke-de-eksisterende-langtidsgrensene-for-utslipp-til-luft-av-ammoniakk-og-fosfin/](https://www.miljodirektoratet.no/ansvarsomrader/forurensning/industri/for-naringsliv/forventninger-til-industriens-utslippskontroll/))
+- https://www.miljodirektoratet.no/hoeringer/2024/desember-2024/speira-recycling-services-raudsand-soker-om-a-oke-de-eksisterende-langtidsgrensene-for-utslipp-til-luft-av-ammoniakk-og-fosfin/](https://www.miljodirektoratet.no/ansvarsomrader/forurensning/industri/for-naringsliv/forventninger-til-industriens-utslippskontroll/
   
 ## Krav
 Hva er kjernekravene til programmet? 
