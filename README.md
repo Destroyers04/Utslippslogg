@@ -43,7 +43,20 @@ Generer rapporter for internbruk eller innsending til myndigheter.
 
 ## Krav
 
-Hva er kjernekravene til programmet? - Hvilke krav har brukerne? - Lagre data for målingene - Tid og dato for målingene - Kjemiske stoffer målt - Måleverdi ( Enhet mg/Nm³, kg/time, tonn/år ) - Målepunkt (ID/navn) - Måleutstyr (Info om måleinstrumentet) - Temperatur (yr.no verdier) - Nedbørsverdi i området (yr.no verdier) - Vindmålinger (yr.no verdier) - Automatisk/manuell målinger - Presentere dataene på en oversiktlig måte - Lage rapporter
+Hva er kjernekravene til programmet?
+
+- Hvilke krav har brukerne?
+  - Lagre data for målingene
+  - Tid og dato for målingene
+  - Kjemiske stoffer målt
+  - Måleverdi ( Enhet mg/Nm³, kg/time, tonn/år )
+  - Målepunkt (ID/navn)
+  - Måleutstyr (Info om måleinstrumentet)
+  - Temperatur (yr.no verdier)
+  - Nedbørsverdi i området (yr.no verdier)
+  - Vindmålinger (yr.no verdier)
+  - Automatisk/manuell målinger
+  - Presentere dataene på en oversiktlig måte - Lage rapporter
 
 ## Techstack being used
 
