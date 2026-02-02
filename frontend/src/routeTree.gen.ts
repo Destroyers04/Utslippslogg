@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LocationsRegionalSteelWorksRouteImport } from './routes/locations/regionalSteelWorks'
+import { Route as LocationsPrecisionManufacturingLLCRouteImport } from './routes/locations/precisionManufacturingLLC'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -28,35 +30,71 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsRegionalSteelWorksRoute =
+  LocationsRegionalSteelWorksRouteImport.update({
+    id: '/locations/regionalSteelWorks',
+    path: '/locations/regionalSteelWorks',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LocationsPrecisionManufacturingLLCRoute =
+  LocationsPrecisionManufacturingLLCRouteImport.update({
+    id: '/locations/precisionManufacturingLLC',
+    path: '/locations/precisionManufacturingLLC',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRoute
+  '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
+  '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRoute
+  '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
+  '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRoute
+  '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
+  '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/locations/precisionManufacturingLLC'
+    | '/locations/regionalSteelWorks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/dashboard'
-  id: '__root__' | '/' | '/about' | '/dashboard'
+  to:
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/locations/precisionManufacturingLLC'
+    | '/locations/regionalSteelWorks'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/locations/precisionManufacturingLLC'
+    | '/locations/regionalSteelWorks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   DashboardRoute: typeof DashboardRoute
+  LocationsPrecisionManufacturingLLCRoute: typeof LocationsPrecisionManufacturingLLCRoute
+  LocationsRegionalSteelWorksRoute: typeof LocationsRegionalSteelWorksRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +120,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/locations/regionalSteelWorks': {
+      id: '/locations/regionalSteelWorks'
+      path: '/locations/regionalSteelWorks'
+      fullPath: '/locations/regionalSteelWorks'
+      preLoaderRoute: typeof LocationsRegionalSteelWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations/precisionManufacturingLLC': {
+      id: '/locations/precisionManufacturingLLC'
+      path: '/locations/precisionManufacturingLLC'
+      fullPath: '/locations/precisionManufacturingLLC'
+      preLoaderRoute: typeof LocationsPrecisionManufacturingLLCRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +141,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   DashboardRoute: DashboardRoute,
+  LocationsPrecisionManufacturingLLCRoute:
+    LocationsPrecisionManufacturingLLCRoute,
+  LocationsRegionalSteelWorksRoute: LocationsRegionalSteelWorksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

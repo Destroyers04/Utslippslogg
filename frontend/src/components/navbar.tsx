@@ -19,7 +19,7 @@ function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <NavigationMenu className="max-w-screen-xl mx-8 mt-4 xl:mx-auto justify-between">
+    <NavigationMenu className="max-w-screen-xl mx-8 mt-4 2xl:mx-auto justify-between">
       <NavigationMenuList className="flex items-center">
         <div>
           <NavigationMenuItem>
