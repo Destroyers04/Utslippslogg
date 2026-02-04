@@ -18,12 +18,12 @@ function RouteComponent() {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-screen-xl  m-4 ">
+    <div className="max-w-screen-xl  mx-auto mt-8">
       <Table>
         <TableCaption>List of your measurement locations</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[250px]">Name</TableHead>
+            <TableHead className="w-[200px]">Name</TableHead>
             <TableHead>Location</TableHead>
             <TableHead>Status</TableHead>
           </TableRow>
@@ -35,7 +35,9 @@ function RouteComponent() {
               navigate({ to: "/locations/precisionManufacturingLLC" })
             }
           >
-            <TableCell>Precision Manufacturing LLC</TableCell>
+            <TableCell className="whitespace-normal">
+              Precision Manufacturing LLC
+            </TableCell>
             <TableCell>Molde, Norway</TableCell>
             <TableCell>
               <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
@@ -47,7 +49,9 @@ function RouteComponent() {
             className="cursor-pointer"
             onClick={() => navigate({ to: "/locations/regionalSteelWorks" })}
           >
-            <TableCell>Regional Steel Works</TableCell>
+            <TableCell className="whitespace-normal">
+              Regional Steel Works
+            </TableCell>
             <TableCell>Tromsø, Norway</TableCell>
             <TableCell>
               <Badge variant="destructive">Waiting</Badge>
