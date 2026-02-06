@@ -1,9 +1,12 @@
-from typing import Optional, Union, List, Annotated
-from datetime import datetime
-from pydantic import BaseModel
+from typing import Union
 from fastapi import FastAPI, HTTPException, Depends
+from database import SessionLocal, engine, get_db
+import models
+import schemas 
+from sqlalchemy.orm import Session
 
 app = FastAPI()
+models.Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def read_root():
