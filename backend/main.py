@@ -1,17 +1,18 @@
-from typing import Union
-from fastapi import FastAPI, HTTPException, Depends
-from database import SessionLocal, engine, get_db
-import models
-import schemas 
-from sqlalchemy.orm import Session
+from fastapi import FastAPI, HTTPException, status
+from database import engine
+from models import site, measurement, userData
+from routers import user
+from dependencies import db_dependency, user_dependency
 
 app = FastAPI()
-models.Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(user.router)
+site.Base.metadata.create_all(bind=engine)
+measurement.Base.metadata.create_all(bind=engine)
+userData.Base.metadata.create_all(bind=engine)
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/", status_code=status.HTTP_200_OK)
+async def user(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+    return user

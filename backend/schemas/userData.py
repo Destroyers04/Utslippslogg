@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
 class UserDataBase(BaseModel):
-    username: str
+    name: str
     email: str
 
-class UserDataCreate(UserDataBase):
+class CreateUser(UserDataBase):
     password: str
 
 class UserDataResponse(UserDataBase):
@@ -13,3 +13,6 @@ class UserDataResponse(UserDataBase):
     class Config:
         from_attributes = True
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
