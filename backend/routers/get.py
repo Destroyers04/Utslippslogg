@@ -1,10 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
-from datetime import datetime, timedelta
 from models.userData import UserSiteAccess
-from jose import jwt
-from string import capwords
-from schemas.site import SiteResponse
 from models.site import Site
 from dependencies import db_dependency, get_current_user
 router = APIRouter(
