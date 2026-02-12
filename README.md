@@ -66,7 +66,7 @@ Hva er kjernekravene til programmet?
 - Vite (build tool)
 - Tailwind CSS v4
 - shadcn/ui (component library)
-- TanStack Router (in progress)
+- TanStack Router
 - ESLint (linting)
 
 **Backend**
