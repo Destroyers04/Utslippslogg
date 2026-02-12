@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 # Every site has a name and location
 class StationBase(BaseModel):
     name: str

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated
 from models.userData import UserSiteAccess
 from models.site import Site
+from models.measurement import Unit
 from dependencies import db_dependency, get_current_user
 router = APIRouter(
     prefix="/get",
@@ -38,6 +39,7 @@ async def fetch_stations(site_id: int, db: db_dependency, user_info: Annotated[d
     
     return site.stations
 
+#Get all measurements from a given site and station
 @router.get("/site/{site_id}/station/{station_id}/measurement", status_code = status.HTTP_200_OK)
 async def fetch_measurements(site_id: int, station_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
@@ -58,3 +60,9 @@ async def fetch_measurements(site_id: int, station_id: int, db: db_dependency, u
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Station not found")
     
     return station.measurements
+
+#Get all units
+@router.get("units", status_code = status.HTTP_200_OK)
+async def fetch_units(db: db_dependency):
+    query = db.query(Unit).all()
+    return query

@@ -20,13 +20,13 @@ router = APIRouter(
 @router.post("/", status_code = status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUser):
     # Name and email are converted to lowercase to ensure case-insensitive matching
-    Create_user_model = UserData(
+    create_user_model = UserData(
         name=capwords(create_user_request.name),
         email=create_user_request.email.lower(),
         hashed_password=bcrypt_context.hash(create_user_request.password),
         role="Viewer", # Default role, can be changed later by an admin
     )
-    db.add(Create_user_model)
+    db.add(create_user_model)
     db.commit()
 
 #Login and access token generation for the user, the token contains the users name, id and role and is valid for 30 minutes
