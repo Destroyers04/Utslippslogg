@@ -52,9 +52,6 @@ Hva er kjernekravene til programmet?
   - Måleverdi ( Enhet mg/Nm³, kg/time, tonn/år )
   - Målepunkt (ID/navn)
   - Måleutstyr (Info om måleinstrumentet)
-  - Temperatur (yr.no verdier)
-  - Nedbørsverdi i området (yr.no verdier)
-  - Vindmålinger (yr.no verdier)
   - Automatisk/manuell målinger
   - Presentere dataene på en oversiktlig måte - Lage rapporter
 
