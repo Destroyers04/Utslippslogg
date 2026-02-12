@@ -71,6 +71,11 @@ Hva er kjernekravene til programmet?
 - FastAPI + Python
 - PostgreSQL
 
+### TODO Liste
+- Sette inn test målinger inn i databasen
+- Bygge API-endepunktene som aggregerer data
+- Fortsette å bygge frontend av nettsiden
+
 ### Database struktur
 Ferdig normalisert database is 4NF form
 <img width="838" height="523" alt="Utslippslogg Database Structure" src="https://github.com/user-attachments/assets/703350bf-6862-47ca-b2e0-3d7d58b4288d" />
