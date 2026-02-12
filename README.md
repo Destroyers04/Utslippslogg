@@ -72,3 +72,4 @@ Hva er kjernekravene til programmet?
 **Backend**
 
 - FastAPI + Python
+- PostgreSQL
