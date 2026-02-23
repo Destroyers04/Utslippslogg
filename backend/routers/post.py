@@ -41,6 +41,15 @@ async def add_station_measurement(site_id: int, station_id: int, db:db_dependenc
     db.add(create_manual_measurement_model)
     db.commit()
 
+# @router.post("/site/{site_id}/station/{station_id}/sensor/create", status_code = status.HTTP_201_CREATED)
+#   async def add_sensor()
+
+# @router.post("/site/{site_id}/station/create", status_code = status.HTTP_201_CREATED)
+#   async def add_station()
+
+# @router.post("/unit/create", status_code = status.HTTP_201_CREATED)
+#   async def add_unit()
+
 def check_admin_privileges(db, user_id: int, site_id: int):
     user = db.query(UserSiteAccess).filter(UserSiteAccess.user_id == user_id, UserSiteAccess.site_id == site_id).first()
     return user and user.role == "Admin"

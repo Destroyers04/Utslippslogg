@@ -17,17 +17,18 @@ router = APIRouter(
 )
 
 #Create a new user
-@router.post("/", status_code = status.HTTP_201_CREATED)
+@router.post("/user/create", status_code = status.HTTP_201_CREATED)
 async def create_user(db: db_dependency, create_user_request: CreateUser):
     # Name and email are converted to lowercase to ensure case-insensitive matching
     create_user_model = UserData(
-        name=capwords(create_user_request.name),
-        email=create_user_request.email.lower(),
+        name = capwords(create_user_request.name),
+        email = create_user_request.email.lower(),
         hashed_password=bcrypt_context.hash(create_user_request.password),
-        role="Viewer", # Default role, can be changed later by an admin
     )
+
     db.add(create_user_model)
     db.commit()
+
 
 #Login and access token generation for the user, the token contains the users name, id and role and is valid for 30 minutes
 @router.post("/token", response_model=Token)
@@ -39,7 +40,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
             detail
             ="Incorrect email or password"
         )
-    token = create_access_token(user.name, user.id, user.role, timedelta(minutes=30))
+    token = create_access_token(user.name, user.user_id, timedelta(minutes=30))
     return {"access_token": token, "token_type": "bearer"}
 
 def authenticate_user(db, email: str, password: str):
@@ -53,8 +54,8 @@ def authenticate_user(db, email: str, password: str):
         return False
     return user
 
-def create_access_token(name: str, user_id: int, role: str, expires_delta: timedelta):
-     encode = {"sub": name, "id": user_id, "role": role}
+def create_access_token(name: str, user_id: int, expires_delta: timedelta):
+     encode = {"sub": name, "id": user_id}
      # Log out the user after 30 minutes, can be changed by changing the expires_delta parameter
      expires = datetime.now() + expires_delta
      encode.update({"exp": expires})

@@ -5,14 +5,14 @@ class UserDataBase(BaseModel):
     email: str
 
 class CreateUser(UserDataBase):
-    password: str
+    password: str # Hashed password will be stored in the database, but we need the plain password to create the hash
 
 class UserDataResponse(UserDataBase):
-    id: int
+    user_id: int
 
     class Config:
         from_attributes = True
-
+        
 class Token(BaseModel):
     access_token: str
     token_type: str

@@ -1,31 +1,33 @@
 from pydantic import BaseModel
 from datetime import datetime
-from schemas.unit import UnitResponse
-from schemas.station import StationResponse
 
 # Schemas for measurements
 class MeasurementBase(BaseModel):
     value: float
-    time: datetime
-    station_id: int #foreign key to station table
     unit_id: int  #foreign key to unit table
 
 class CreateMeasurement(MeasurementBase):
     pass
+
 class MeasurementResponse(MeasurementBase):
     measurement_id: int 
-    type: str
+    type: str 
+    time: datetime
+    station_id: int #foreign key to station table
     class Config:
         from_attributes = True
 
 # Schemas for measurement types
 class MeasurementTypeBase(BaseModel):
     measurement_id: int
+
 class SensorMeasurementResponse(MeasurementTypeBase):
     sensor_id: int #foreign key to sensor table
     class Config:
         from_attributes = True
 
+class CreateManualMeasurement(MeasurementTypeBase):
+    user_id: int #foreign key to user table
 class ManualMeasurementResponse(MeasurementTypeBase):
     user_id: int #foreign key to user table
     class Config:

@@ -1,6 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
-from typing import List, Optional
+from typing import List
 from schemas.station import StationResponse
 
 class SiteResponse(BaseModel):

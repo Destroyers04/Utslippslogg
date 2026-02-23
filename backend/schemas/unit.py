@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 
-class UnitResponse(BaseModel):
-    id: int
-    name: str #Kilogram or Parts per million
-    unit: str #Kg/ ppm or 
-
+class UnitBase(BaseModel):
+    unit: str #Kg or ppm f.ex
+    emission: str #CO2, NOx, etc.
+class CreateUnit(UnitBase):
+    pass
+class UnitResponse(UnitBase):
+    unit_id: int
     class Config:
         from_attributes = True

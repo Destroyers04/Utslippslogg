@@ -4,6 +4,10 @@ from models.userData import UserSiteAccess
 from models.site import Site, Station
 from models.measurement import Unit, Measurement
 from dependencies import db_dependency, get_current_user
+from schemas.site import SiteResponse
+from schemas.station import StationResponse
+from schemas.measurement import MeasurementResponse
+from schemas.unit import UnitResponse
 
 router = APIRouter(
     prefix="/get",
@@ -11,7 +15,7 @@ router = APIRouter(
 )
 
 # Get all sites the user has access to
-@router.get("/site", status_code = status.HTTP_200_OK)
+@router.get("/site", status_code=status.HTTP_200_OK, response_model=list[SiteResponse])
 async def fetch_sites(db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
     user_id = user_info["id"]
@@ -23,7 +27,7 @@ async def fetch_sites(db: db_dependency, user_info: Annotated[dict, Depends(get_
     return sites
 
 # Get all stations for a specific site, the user must have access to the site to access the stations
-@router.get("/site/{site_id}/station", status_code = status.HTTP_200_OK)
+@router.get("/site/{site_id}/station", status_code=status.HTTP_200_OK, response_model=list[StationResponse])
 async def fetch_stations(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
     user_id = user_info["id"]
@@ -41,7 +45,7 @@ async def fetch_stations(site_id: int, db: db_dependency, user_info: Annotated[d
     return site.stations
 
 #Get all measurements from a given station 
-@router.get("/site/{site_id}/station/{station_id}/measurements", status_code = status.HTTP_200_OK)
+@router.get("/site/{site_id}/station/{station_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
 async def fetch_station_measurements(site_id: int, station_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
     user_id = user_info["id"]
@@ -55,11 +59,12 @@ async def fetch_station_measurements(site_id: int, station_id: int, db: db_depen
     station = db.query(Station).filter(Station.station_id == station_id, Station.site_id == site_id).first()
     if not station:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="station not found")
-    
-    # Return the measurements for the station
-    return station.measurements
 
-@router.get("/site/{site_id}/measurements", status_code = status.HTTP_200_OK)
+    # Return the measurements for the station with unit data
+    measurements = db.query(Measurement).join(Unit).filter(Measurement.station_id == station_id).order_by(Measurement.time.desc()).all()
+    return measurements
+
+@router.get("/site/{site_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
 async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
     user_id = user_info["id"]
@@ -74,14 +79,12 @@ async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Ann
     if not access:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You do not have access to this site")
     
-    # Return all measurements for the site
-    query = db.query(Measurement)
-    query = query.join(Station)
-    measurements = query.filter(Station.site_id == site_id).all()
+    # Return all measurements for the site with unit data
+    measurements = db.query(Measurement).join(Station).join(Unit).filter(Station.site_id == site_id).order_by(Measurement.time.desc()).all()
     return measurements
     
 #Get all units
-@router.get("/units", status_code = status.HTTP_200_OK)
+@router.get("/units", status_code=status.HTTP_200_OK, response_model=list[UnitResponse])
 async def fetch_units(db: db_dependency):
     query = db.query(Unit).all()
     return query
