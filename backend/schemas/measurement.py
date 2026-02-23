@@ -3,20 +3,46 @@ from datetime import datetime
 from schemas.unit import UnitResponse
 from schemas.station import StationResponse
 
+# Schemas for measurements
 class MeasurementBase(BaseModel):
     value: float
     time: datetime
-    station_id: int
+    station_id: int #foreign key to station table
     unit_id: int  #foreign key to unit table
-    is_automatic: bool = False
-    sensor: str
-    user_id: int
 
 class CreateMeasurement(MeasurementBase):
     pass
-
 class MeasurementResponse(MeasurementBase):
-    id: int
+    measurement_id: int 
+    type: str
     class Config:
         from_attributes = True
+
+# Schemas for measurement types
+class MeasurementTypeBase(BaseModel):
+    measurement_id: int
+class SensorMeasurementResponse(MeasurementTypeBase):
+    sensor_id: int #foreign key to sensor table
+    class Config:
+        from_attributes = True
+
+class ManualMeasurementResponse(MeasurementTypeBase):
+    user_id: int #foreign key to user table
+    class Config:
+        from_attributes = True
+
+# Schemas for sensors
+class SensorBase(BaseModel):
+    model: str
+    serial_number: str
+    station_id: int #foreign key to station table
+
+class CreateSensor(SensorBase):
+    pass
+
+class SensorResponse(SensorBase):
+    sensor_id: int
+    class Config:
+        from_attributes = True
+
 
