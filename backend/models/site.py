@@ -17,7 +17,7 @@ class Site(Base):
 class Station(Base):
       __tablename__ = "station"
 
-      id = Column(Integer, primary_key=True, index=True)
+      station_id = Column(Integer, primary_key=True, index=True)
       name = Column(String, index=True)
       location_description = Column(String)
       site_id = Column(Integer, ForeignKey("site.id"))
