@@ -52,9 +52,6 @@ Hva er kjernekravene til programmet?
   - Måleverdi ( Enhet mg/Nm³, kg/time, tonn/år )
   - Målepunkt (ID/navn)
   - Måleutstyr (Info om måleinstrumentet)
-  - Temperatur (yr.no verdier)
-  - Nedbørsverdi i området (yr.no verdier)
-  - Vindmålinger (yr.no verdier)
   - Automatisk/manuell målinger
   - Presentere dataene på en oversiktlig måte - Lage rapporter
 
@@ -66,9 +63,19 @@ Hva er kjernekravene til programmet?
 - Vite (build tool)
 - Tailwind CSS v4
 - shadcn/ui (component library)
-- TanStack Router (in progress)
+- TanStack Router
 - ESLint (linting)
 
 **Backend**
 
 - FastAPI + Python
+- PostgreSQL
+
+### TODO Liste
+- Sette inn test målinger inn i databasen
+- Bygge API-endepunktene som aggregerer data
+- Fortsette å bygge frontend av nettsiden
+
+### Database struktur
+Ferdig normalisert database is 4NF form
+<img width="838" height="523" alt="Utslippslogg Database Structure" src="https://github.com/user-attachments/assets/703350bf-6862-47ca-b2e0-3d7d58b4288d" />
