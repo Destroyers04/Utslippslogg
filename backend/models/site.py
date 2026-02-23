@@ -8,7 +8,7 @@ class Site(Base):
       site_id = Column(Integer, primary_key=True, index=True)
       name = Column(String, index=True)
       location = Column(String)
-      stations = relationship("Station", back_populates="site")
+      stations = relationship("Station", back_populates="sites")
 
       @property
       def station_count(self):
@@ -20,8 +20,8 @@ class Station(Base):
       station_id = Column(Integer, primary_key=True, index=True)
       name = Column(String, index=True)
       location_description = Column(String)
-      site_id = Column(Integer, ForeignKey("site.id"))
-      site = relationship("Site", back_populates="stations")
+      site_id = Column(Integer, ForeignKey("site.site_id"))
+      sites = relationship("Site", back_populates="stations")
       measurements = relationship("Measurement", back_populates="stations")
       sensors = relationship("Sensor", back_populates="stations")
 

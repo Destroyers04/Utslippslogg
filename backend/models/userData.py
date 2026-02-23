@@ -11,6 +11,6 @@ class UserData(Base):
 
 class UserSiteAccess(Base):
     __tablename__ = "user_site_access"
-    user_id = Column(Integer, ForeignKey("user_data.id"), primary_key=True)
-    site_id = Column(Integer, ForeignKey("site.id"), primary_key=True)
+    user_id = Column(Integer, ForeignKey("user_data.user_id"), primary_key=True)
+    site_id = Column(Integer, ForeignKey("site.site_id"), primary_key=True)
     role = Column(String) 

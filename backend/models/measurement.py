@@ -23,14 +23,14 @@ class Sensor(Base):
       serial_number = Column(String)
       station_id = Column(Integer, ForeignKey("station.station_id"))
       stations = relationship("Station", back_populates="sensors")
+      sensor_measurements = relationship("SensorMeasurement", back_populates="measurements")
 
 class SensorMeasurement(Base):
       __tablename__ = "sensor_measurement"
 
       measurement_id = Column(Integer, ForeignKey("measurement.measurement_id"), primary_key=True)
       sensor_id = Column(Integer, ForeignKey("sensor.sensor_id"))
-      measurements = relationship("Measurement", back_populates="sensor_measurement")
-      sensors = relationship("Sensor", back_populates="")
+      measurements = relationship("Measurement", back_populates="sensor_measurements")
 
 class ManualMeasurement(Base):
       __tablename__ = "manual_measurement"
