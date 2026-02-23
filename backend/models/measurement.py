@@ -5,19 +5,43 @@ from database import Base
 class Measurement(Base):
       __tablename__ = "measurement"
 
-      id = Column(Integer, primary_key=True, index=True)
+      measurement_id = Column(Integer, primary_key=True, index=True)
       value = Column(Float)
       time = Column(DateTime)
-      sensor = Column(String)
-      is_automatic = Column(Boolean, default=False)
-      station_id = Column(Integer, ForeignKey("station.id"))
-      unit_id = Column(Integer, ForeignKey("unit.id"))
-      user_id = Column(Integer, ForeignKey("user_data.id"))
-      station = relationship("Station", back_populates="measurements")
+      station_id = Column(Integer, ForeignKey("station.station_id"))
+      unit_id = Column(Integer, ForeignKey("unit.unit_id"))
+      type = Column(String, default = "Automatic")
+      stations = relationship("Station", back_populates="measurements")
+      sensor_measurements = relationship("SensorMeasurement", back_populates="measurements")
+      manual_measurement = relationship("ManualMeasurement", back_populates="measurements")
+
+class Sensor(Base):
+      __tablename__ = "sensor"
+
+      sensor_id = Column(Integer, primary_key=True, index=True)
+      model = Column(String)
+      serial_number = Column(String)
+      station_id = Column(Integer, ForeignKey("station.station_id"))
+      stations = relationship("Station", back_populates="sensors")
+
+class SensorMeasurement(Base):
+      __tablename__ = "sensor_measurement"
+
+      measurement_id = Column(Integer, ForeignKey("measurement.measurement_id"), primary_key=True)
+      sensor_id = Column(Integer, ForeignKey("sensor.sensor_id"))
+      measurements = relationship("Measurement", back_populates="sensor_measurement")
+      sensors = relationship("Sensor", back_populates="")
+
+class ManualMeasurement(Base):
+      __tablename__ = "manual_measurement"
+
+      measurement_id = Column(Integer, ForeignKey("measurement.measurement_id"), primary_key=True)
+      user_id = Column(Integer, ForeignKey("user_data.user_id"))
+      measurements = relationship("Measurement", back_populates="manual_measurement")
 
 class Unit(Base):
       __tablename__ = "unit"
 
-      id = Column(Integer, primary_key=True, index=True)
+      unit_id = Column(Integer, primary_key=True, index=True)
       name = Column(String, index=True) #Kilogram or Parts per million
       unit = Column(String) #Kg/ ppm or other unit of measurement
