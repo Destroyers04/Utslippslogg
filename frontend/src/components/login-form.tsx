@@ -7,13 +7,23 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useEffect } from "react";
+import { getLogInToken } from "@/api/api";
+import { useNavigate } from "@tanstack/react-router";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+  const navigate = useNavigate({ from: "/login" });
+  const handleLogin = async (email, password) => {
+    const token = await getLogInToken(email, password);
+    // Storing the token in localStorage for demonstration purposes, consider using a more secure storage method in production.
+    localStorage.setItem("token", token);
+  };
+
   async function submitUserData(previousState, formData) {
     const email = formData.get("email");
     const password = formData.get("password");
-    console.log("success");
+    await handleLogin(email, password);
+    navigate({ to: "/dashboard" });
   }
 
   const [state, formAction, isPending] = useActionState(submitUserData, 0);
@@ -24,6 +34,7 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
       formAction();
     });
   }
+
   return (
     <form
       action={formAction}
