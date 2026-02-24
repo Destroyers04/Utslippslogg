@@ -28,13 +28,6 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
 
   const [state, formAction, isPending] = useActionState(submitUserData, 0);
 
-  function handleClick() {
-    console.log("Button clicked");
-    startTransition(() => {
-      formAction();
-    });
-  }
-
   return (
     <form
       action={formAction}
