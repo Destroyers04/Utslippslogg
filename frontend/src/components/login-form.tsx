@@ -10,18 +10,13 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useActionState, useEffect } from "react";
 import { getLogInToken } from "@/api/api";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
+import { Route as contactRoute } from "@/routes/contact";
+import { Route as dashboardRoute } from "@/routes/dashboard";
+import { Route as loginRoute } from "@/routes/login";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
-  const navigate = useNavigate({ from: "/login" });
-
-  // Check if the user is already logged in by looking for a token in localStorage.
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate({ to: "/dashboard" });
-    }
-  }, []);
+  const navigate = useNavigate({ from: loginRoute.to });
 
   const handleLogin = async (email, password) => {
     const token = await getLogInToken(email, password);
@@ -44,12 +39,8 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
 
   useEffect(() => {
     if (state === "success") {
-      navigate({ to: "/dashboard" });
-    }
-  }, [state]);
-
-  useEffect(() => {
-    if (state && state !== "success") {
+      navigate({ to: dashboardRoute.to });
+    } else if (state && state !== "success") {
       toast.error(state, { position: "top-center" });
     }
   }, [state]);
@@ -98,9 +89,9 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
         <Field>
           <FieldDescription className="text-center">
             Don&apos;t have an account or forgot your password?{" "}
-            <a href="/about" className="underline underline-offset-4">
+            <Link to={contactRoute.to} className="underline underline-offset-4">
               Contact us!
-            </a>
+            </Link>
           </FieldDescription>
         </Field>
       </FieldGroup>

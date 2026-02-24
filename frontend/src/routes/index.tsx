@@ -1,9 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router"
+import { Route as dashboardRoute } from "@/routes/dashboard"
 
 export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-function Index() {
-  return <div className="p-2 content-center">test</div>;
-}
+  beforeLoad: () => {
+    throw redirect({ to: dashboardRoute.to })
+  },
+})

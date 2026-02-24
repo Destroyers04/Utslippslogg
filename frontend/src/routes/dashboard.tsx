@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import {
   Table,
   TableCaption,
@@ -9,14 +9,19 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Route as loginRoute } from "@/routes/login";
 
 export const Route = createFileRoute("/dashboard")({
-  component: RouteComponent,
+  beforeLoad: () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw redirect({ to: loginRoute.to });
+    }
+  },
+  component: DashboardPage,
 });
 
-function RouteComponent() {
-  const navigate = useNavigate();
-
+function DashboardPage() {
   return (
     <div className="max-w-screen-xl  mx-auto mt-8">
       <Table>

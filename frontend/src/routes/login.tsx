@@ -1,9 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
 import mountains from "@/assets/mountains.jpg";
 import { LoginForm } from "@/components/login-form";
+import { Route as dashboardRoute } from "@/routes/dashboard";
 
 export const Route = createFileRoute("/login")({
+  beforeLoad: () => {
+    // Check if the user is already logged in by looking for a token in localStorage.
+    const token = localStorage.getItem("token");
+    if (token) {
+      throw redirect({ to: dashboardRoute.to });
+    }
+  },
   component: LoginPage,
 });
 
