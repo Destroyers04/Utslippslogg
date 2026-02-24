@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocationsRegionalSteelWorksRouteImport } from './routes/locations/regionalSteelWorks'
 import { Route as LocationsPrecisionManufacturingLLCRouteImport } from './routes/locations/precisionManufacturingLLC'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
@@ -62,6 +70,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/dashboard'
+    | '/login'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   fileRoutesByTo: FileRoutesByTo
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/dashboard'
+    | '/login'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   id:
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/dashboard'
+    | '/login'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   fileRoutesById: FileRoutesById
@@ -93,12 +105,20 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   DashboardRoute: typeof DashboardRoute
+  LoginRoute: typeof LoginRoute
   LocationsPrecisionManufacturingLLCRoute: typeof LocationsPrecisionManufacturingLLCRoute
   LocationsRegionalSteelWorksRoute: typeof LocationsRegionalSteelWorksRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -141,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   DashboardRoute: DashboardRoute,
+  LoginRoute: LoginRoute,
   LocationsPrecisionManufacturingLLCRoute:
     LocationsPrecisionManufacturingLLCRoute,
   LocationsRegionalSteelWorksRoute: LocationsRegionalSteelWorksRoute,

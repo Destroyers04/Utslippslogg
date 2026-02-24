@@ -1,0 +1,81 @@
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { startTransition, useActionState } from "react";
+
+function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+  async function submitUserData(previousState, formData) {
+    const email = formData.get("email");
+    const password = formData.get("password");
+    console.log("success");
+  }
+
+  const [state, formAction, isPending] = useActionState(submitUserData, 0);
+
+  function handleClick() {
+    console.log("Button clicked");
+    startTransition(() => {
+      formAction();
+    });
+  }
+  return (
+    <form
+      action={formAction}
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+    >
+      <FieldGroup>
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <p className="text-muted-foreground text-sm text-balance">
+            Enter your email below to login to your account
+          </p>
+        </div>
+        <Field>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Guest@example.com"
+            required
+            className="bg-background"
+          />
+        </Field>
+        <Field>
+          <div className="flex items-center">
+            <FieldLabel htmlFor="password">Password</FieldLabel>
+          </div>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            className="bg-background"
+          />
+        </Field>
+        <Field>
+          <Button type="submit">
+            {isPending ? "Logging you in..." : "Log in"}
+          </Button>
+        </Field>
+        <Field>
+          <FieldDescription className="text-center">
+            Don&apos;t have an account or forgot your password?{" "}
+            <a href="/about" className="underline underline-offset-4">
+              Contact us!
+            </a>
+          </FieldDescription>
+        </Field>
+      </FieldGroup>
+    </form>
+  );
+}
+
+export { LoginForm };
