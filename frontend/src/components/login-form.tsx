@@ -7,7 +7,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { startTransition, useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { getLogInToken } from "@/api/api";
 import { useNavigate } from "@tanstack/react-router";
 
