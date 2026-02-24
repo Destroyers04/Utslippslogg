@@ -7,16 +7,12 @@ const API_URL = "http://127.0.0.1:8000";
 export const getLogInToken = async (
   email: string,
   password: string,
-): Promise<Token> => {
-  try {
-    // OAuth2 requires form data, not JSON
-    const params = new URLSearchParams();
-    params.append("username", email);
-    params.append("password", password);
-    const response = await axios.post(`${API_URL}/auth/token`, params);
-    const accessToken = response.data.access_token;
-    return accessToken;
-  } catch (error) {
-    throw error;
-  }
+): Promise<string> => {
+  // OAuth2 requires form data, not JSON
+  const params = new URLSearchParams();
+  params.append("username", email);
+  params.append("password", password);
+  const response = await axios.post(`${API_URL}/auth/token`, params);
+  const accessToken = response.data;
+  return accessToken;
 };
