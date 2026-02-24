@@ -7,12 +7,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useActionState } from "react";
+import { toast } from "sonner";
+import { useActionState, useEffect } from "react";
 import { getLogInToken } from "@/api/api";
 import { useNavigate } from "@tanstack/react-router";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const navigate = useNavigate({ from: "/login" });
+
+  // Check if the user is already logged in by looking for a token in localStorage.
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate({ to: "/dashboard" });
+    }
+  }, []);
+
   const handleLogin = async (email, password) => {
     const token = await getLogInToken(email, password);
     // Storing the token in localStorage for demonstration purposes, consider using a more secure storage method in production.
@@ -20,13 +30,29 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   };
 
   async function submitUserData(previousState, formData) {
-    const email = formData.get("email");
-    const password = formData.get("password");
-    await handleLogin(email, password);
-    navigate({ to: "/dashboard" });
+    try {
+      const email = formData.get("email");
+      const password = formData.get("password");
+      await handleLogin(email, password);
+      return "success";
+    } catch (error) {
+      return "Invalid email or password. Please try again.";
+    }
   }
 
   const [state, formAction, isPending] = useActionState(submitUserData, 0);
+
+  useEffect(() => {
+    if (state === "success") {
+      navigate({ to: "/dashboard" });
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (state && state !== "success") {
+      toast.error(state, { position: "top-center" });
+    }
+  }, [state]);
 
   return (
     <form
