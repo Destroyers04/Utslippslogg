@@ -1,12 +1,4 @@
-import { LogInForm } from "@/components/old login";
-import { useAuth } from "@/hooks/useAuth";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { GalleryVerticalEnd } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -14,46 +6,39 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Profile } from "@/components/profile";
+import { Link } from "@tanstack/react-router";
+import { Route as indexRoute } from "@/routes/index";
+import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
+import { Route as loginRoute } from "@/routes/login";
+import { Button } from "@/components/ui/button";
 
 function Navbar() {
-  const { user, logout } = useAuth();
-
   return (
-    <NavigationMenu className="max-w-screen-xl mx-8 mt-4 2xl:mx-auto justify-between">
-      <NavigationMenuList className="flex items-center">
-        <div>
+    <nav className="flex justify-between items-center max-w-screen-xl mx-20 mt-4 2xl:mx-auto">
+      <NavigationMenu>
+        <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuLink variant="outline" href="/">
-              Home
+            <NavigationMenuLink asChild className="bg-primary">
+              <Link to={indexRoute.to}>
+                <GalleryVerticalEnd className="size-4 text-white" />
+              </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
-        </div>
-        {user && (
-          <div>
-            <NavigationMenuItem>
-              <NavigationMenuLink href="/dashboard">
-                Dashboard
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          </div>
-        )}
-      </NavigationMenuList>
-      <div>
-        <NavigationMenuItem className="list-none">
-          {!user && (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button>Log in</Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <LogInForm />
-              </PopoverContent>
-            </Popover>
-          )}
-          {user && <Profile />}
-        </NavigationMenuItem>
-      </div>
-    </NavigationMenu>
+          <NavigationMenuItem>
+            <NavigationMenuLink asChild>
+              <Link to={dashboardRoute.to}>Dashboard</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+      {localStorage.getItem("token") ? (
+        <Profile />
+      ) : (
+        <Button asChild>
+          <Link to={loginRoute.to}>Log in</Link>
+        </Button>
+      )}
+    </nav>
   );
 }
 

@@ -1,6 +1,6 @@
-import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Route as indexRoute } from "@/routes/index";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,14 +10,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 function Profile() {
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  if (!user) return null;
-
   const handleLogout = () => {
-    logout();
-    navigate({ to: "/" });
+    localStorage.clear("token");
+    navigate({ to: indexRoute.to });
   };
 
   return (

@@ -8,15 +8,16 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { getLogInToken } from "@/api/api";
 import { useNavigate, Link } from "@tanstack/react-router";
-import { Route as contactRoute } from "@/routes/_app/contact";
-import { Route as dashboardRoute } from "@/routes/_app/dashboard";
+import { Route as contactRoute } from "@/routes/contact";
+import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
 import { Route as loginRoute } from "@/routes/login";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
   const navigate = useNavigate({ from: loginRoute.to });
+  const [, formAction, isPending] = useActionState(submitUserData, 0);
 
   const handleLogin = async (email, password) => {
     const token = await getLogInToken(email, password);
@@ -29,21 +30,13 @@ function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
       const email = formData.get("email");
       const password = formData.get("password");
       await handleLogin(email, password);
-      return "success";
+      await navigate({ to: dashboardRoute.to });
     } catch (error) {
-      return "Invalid email or password. Please try again.";
+      toast.error("Invalid email or password. Please try again.", {
+        position: "top-center",
+      });
     }
   }
-
-  const [state, formAction, isPending] = useActionState(submitUserData, 0);
-
-  useEffect(() => {
-    if (state === "success") {
-      navigate({ to: dashboardRoute.to });
-    } else if (state && state !== "success") {
-      toast.error(state, { position: "top-center" });
-    }
-  }, [state]);
 
   return (
     <form

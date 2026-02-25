@@ -10,20 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as AppRouteRouteImport } from './routes/_app/route'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocationsRegionalSteelWorksRouteImport } from './routes/locations/regionalSteelWorks'
 import { Route as LocationsPrecisionManufacturingLLCRouteImport } from './routes/locations/precisionManufacturingLLC'
-import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
-import { Route as AppContactRouteImport } from './routes/_app/contact'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/_app',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,40 +48,35 @@ const LocationsPrecisionManufacturingLLCRoute =
     path: '/locations/precisionManufacturingLLC',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppContactRoute = AppContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
-  '/contact': typeof AppContactRoute
-  '/dashboard': typeof AppDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
-  '/contact': typeof AppContactRoute
-  '/dashboard': typeof AppDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_app': typeof AppRouteRouteWithChildren
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
-  '/_app/contact': typeof AppContactRoute
-  '/_app/dashboard': typeof AppDashboardRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
@@ -84,33 +84,34 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/login'
     | '/contact'
+    | '/login'
     | '/dashboard'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/login'
     | '/contact'
+    | '/login'
     | '/dashboard'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   id:
     | '__root__'
     | '/'
-    | '/_app'
+    | '/_authenticated'
+    | '/contact'
     | '/login'
-    | '/_app/contact'
-    | '/_app/dashboard'
+    | '/_authenticated/dashboard'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRouteWithChildren
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
   LocationsPrecisionManufacturingLLCRoute: typeof LocationsPrecisionManufacturingLLCRoute
   LocationsRegionalSteelWorksRoute: typeof LocationsRegionalSteelWorksRoute
@@ -125,11 +126,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app': {
-      id: '/_app'
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof AppRouteRouteImport
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -153,40 +161,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationsPrecisionManufacturingLLCRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/contact': {
-      id: '/_app/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof AppContactRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AppRouteRouteChildren {
-  AppContactRoute: typeof AppContactRoute
-  AppDashboardRoute: typeof AppDashboardRoute
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
 }
 
-const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppContactRoute: AppContactRoute,
-  AppDashboardRoute: AppDashboardRoute,
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 
-const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
-  AppRouteRouteChildren,
-)
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRouteRoute: AppRouteRouteWithChildren,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
   LocationsPrecisionManufacturingLLCRoute:
     LocationsPrecisionManufacturingLLCRoute,

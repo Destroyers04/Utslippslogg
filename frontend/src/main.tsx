@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { AuthProvider } from "@/hooks/useAuth";
 
 import "./index.css";
 
@@ -24,9 +23,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <RouterProvider router={router} />
     </StrictMode>,
   );
 }

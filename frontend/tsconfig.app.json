@@ -30,5 +30,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/routes/_app/dashboard.tsx"]
+  "include": ["src", "src/routes/_authenticated/dashboard.tsx"]
 }
