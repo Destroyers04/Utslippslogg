@@ -6,8 +6,8 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 from string import capwords
-from schemas.userData import CreateUser, Token
-from dependencies import db_dependency, secret_key, algorithm
+from schemas.userData import CreateUser, Token, UserDataResponse
+from dependencies import db_dependency, secret_key, algorithm, get_current_user
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -40,7 +40,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
             detail
             ="Incorrect email or password"
         )
-    token = create_access_token(user.name, user.user_id, timedelta(minutes=30))
+    token = create_access_token(user.name, user.email, user.user_id, timedelta(minutes=30))
     return {"access_token": token, "token_type": "bearer"}
 
 def authenticate_user(db, email: str, password: str):
@@ -54,8 +54,8 @@ def authenticate_user(db, email: str, password: str):
         return False
     return user
 
-def create_access_token(name: str, user_id: int, expires_delta: timedelta):
-     encode = {"sub": name, "id": user_id}
+def create_access_token(name: str, email: str, user_id: int, expires_delta: timedelta):
+     encode = {"sub": name, "user_id": user_id, "email": email}
      # Log out the user after 30 minutes, can be changed by changing the expires_delta parameter
      expires = datetime.now() + expires_delta
      encode.update({"exp": expires})

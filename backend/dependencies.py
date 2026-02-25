@@ -25,10 +25,11 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     try:
         payload = jwt.decode(token, secret_key, algorithms=[algorithm])
         name: str = payload.get("sub")
-        user_id: int = payload.get("id")
-        if name is None or user_id is None:
+        user_id: int = payload.get("user_id")
+        email: str = payload.get("email")
+        if name is None or user_id is None or email is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-        return {"name": name, "id": user_id}
+        return {"name": name, "user_id": user_id, "email": email}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
