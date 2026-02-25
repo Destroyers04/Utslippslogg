@@ -15,7 +15,7 @@ router = APIRouter(
 @router.post("/site/{site_id}/station/{station_id}/measurement", status_code = status.HTTP_201_CREATED)
 async def add_station_measurement(site_id: int, station_id: int, db:db_dependency, create_measurement_request: CreateMeasurement, user_info: Annotated[dict, Depends(get_current_user)]):
     #Check if the user has the necessary privileges to add a measurement
-    current_user_id = user_info["id"]
+    current_user_id = user_info["user_id"]
 
     if not check_admin_privileges(db, current_user_id, site_id):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You do not have the necessary privileges to perform this action")

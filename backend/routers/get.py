@@ -18,7 +18,7 @@ router = APIRouter(
 @router.get("/site", status_code=status.HTTP_200_OK, response_model=list[SiteResponse])
 async def fetch_sites(db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
-    user_id = user_info["id"]
+    user_id = user_info["user_id"]
 
     # Query the database for all sites the user has access to
     query = db.query(Site)    
@@ -30,7 +30,7 @@ async def fetch_sites(db: db_dependency, user_info: Annotated[dict, Depends(get_
 @router.get("/site/{site_id}/station", status_code=status.HTTP_200_OK, response_model=list[StationResponse])
 async def fetch_stations(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
-    user_id = user_info["id"]
+    user_id = user_info["user_id"]
 
     # Check if the user has access to the site
     access = db.query(UserSiteAccess).filter(UserSiteAccess.user_id == user_id, UserSiteAccess.site_id == site_id).first()
@@ -48,7 +48,7 @@ async def fetch_stations(site_id: int, db: db_dependency, user_info: Annotated[d
 @router.get("/site/{site_id}/station/{station_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
 async def fetch_station_measurements(site_id: int, station_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
-    user_id = user_info["id"]
+    user_id = user_info["user_id"]
 
     # Check if the user has access to the site
     access = db.query(UserSiteAccess).filter(UserSiteAccess.user_id == user_id, UserSiteAccess.site_id == site_id).first()
@@ -67,7 +67,7 @@ async def fetch_station_measurements(site_id: int, station_id: int, db: db_depen
 @router.get("/site/{site_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
 async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
     # Get the user's id from the token
-    user_id = user_info["id"]
+    user_id = user_info["user_id"]
 
     # Find the site
     site = db.query(Site).filter(Site.site_id == site_id).first()
