@@ -11,8 +11,8 @@ import { toast } from "sonner";
 import { useActionState, useEffect } from "react";
 import { getLogInToken } from "@/api/api";
 import { useNavigate, Link } from "@tanstack/react-router";
-import { Route as contactRoute } from "@/routes/contact";
-import { Route as dashboardRoute } from "@/routes/dashboard";
+import { Route as contactRoute } from "@/routes/_app/contact";
+import { Route as dashboardRoute } from "@/routes/_app/dashboard";
 import { Route as loginRoute } from "@/routes/login";
 
 function LoginForm({ className, ...props }: React.ComponentProps<"form">) {

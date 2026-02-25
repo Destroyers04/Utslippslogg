@@ -10,25 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocationsRegionalSteelWorksRouteImport } from './routes/locations/regionalSteelWorks'
 import { Route as LocationsPrecisionManufacturingLLCRouteImport } from './routes/locations/precisionManufacturingLLC'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppContactRouteImport } from './routes/_app/contact'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -48,29 +43,40 @@ const LocationsPrecisionManufacturingLLCRoute =
     path: '/locations/precisionManufacturingLLC',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppContactRoute = AppContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/contact': typeof AppContactRoute
+  '/dashboard': typeof AppDashboardRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/contact': typeof AppContactRoute
+  '/dashboard': typeof AppDashboardRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
+  '/_app': typeof AppRouteRouteWithChildren
   '/login': typeof LoginRoute
+  '/_app/contact': typeof AppContactRoute
+  '/_app/dashboard': typeof AppDashboardRoute
   '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
   '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
@@ -78,33 +84,33 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/contact'
     | '/dashboard'
-    | '/login'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
     | '/contact'
     | '/dashboard'
-    | '/login'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   id:
     | '__root__'
     | '/'
-    | '/contact'
-    | '/dashboard'
+    | '/_app'
     | '/login'
+    | '/_app/contact'
+    | '/_app/dashboard'
     | '/locations/precisionManufacturingLLC'
     | '/locations/regionalSteelWorks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ContactRoute: typeof ContactRoute
-  DashboardRoute: typeof DashboardRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   LocationsPrecisionManufacturingLLCRoute: typeof LocationsPrecisionManufacturingLLCRoute
   LocationsRegionalSteelWorksRoute: typeof LocationsRegionalSteelWorksRoute
@@ -119,18 +125,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -154,13 +153,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationsPrecisionManufacturingLLCRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/contact': {
+      id: '/_app/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof AppContactRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
+interface AppRouteRouteChildren {
+  AppContactRoute: typeof AppContactRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppContactRoute: AppContactRoute,
+  AppDashboardRoute: AppDashboardRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ContactRoute: ContactRoute,
-  DashboardRoute: DashboardRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   LocationsPrecisionManufacturingLLCRoute:
     LocationsPrecisionManufacturingLLCRoute,

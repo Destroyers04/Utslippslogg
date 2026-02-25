@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Route as loginRoute } from "@/routes/login";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_app/dashboard")({
   beforeLoad: () => {
     const token = localStorage.getItem("token");
     if (!token) {

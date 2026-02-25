@@ -2,7 +2,7 @@ import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
 import mountains from "@/assets/mountains.jpg";
 import { LoginForm } from "@/components/login-form";
-import { Route as dashboardRoute } from "@/routes/dashboard";
+import { Route as dashboardRoute } from "@/routes/_app/dashboard";
 
 export const Route = createFileRoute("/login")({
   beforeLoad: () => {

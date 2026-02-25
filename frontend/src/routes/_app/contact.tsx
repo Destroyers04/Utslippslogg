@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-export const Route = createFileRoute("/contact")({
+export const Route = createFileRoute("/_app/contact")({
   component: Contact,
 });
 
