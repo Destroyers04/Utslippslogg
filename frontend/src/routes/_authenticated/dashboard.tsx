@@ -1,62 +1,13 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import {
-  Table,
-  TableCaption,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { createFileRoute } from "@tanstack/react-router";
+import { getUserData } from "@/api/api";
+import { SiteCollection } from "@/components/site-collection";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  loader: () => getUserData(localStorage.getItem("token")!),
   component: DashboardPage,
 });
 
 function DashboardPage() {
-  return (
-    <div className="max-w-screen-xl  mx-auto mt-8">
-      <Table>
-        <TableCaption>List of your measurement locations</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Name</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow
-            className="cursor-pointer"
-            onClick={() =>
-              navigate({ to: "/locations/precisionManufacturingLLC" })
-            }
-          >
-            <TableCell className="whitespace-normal">
-              Precision Manufacturing LLC
-            </TableCell>
-            <TableCell>Molde, Norway</TableCell>
-            <TableCell>
-              <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
-                Active
-              </Badge>
-            </TableCell>
-          </TableRow>
-          <TableRow
-            className="cursor-pointer"
-            onClick={() => navigate({ to: "/locations/regionalSteelWorks" })}
-          >
-            <TableCell className="whitespace-normal">
-              Regional Steel Works
-            </TableCell>
-            <TableCell>Tromsø, Norway</TableCell>
-            <TableCell>
-              <Badge variant="destructive">Waiting</Badge>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </div>
-  );
+  const userData = Route.useLoaderData();
+  return <SiteCollection userData={userData} />;
 }

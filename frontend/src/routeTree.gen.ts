@@ -13,8 +13,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LocationsRegionalSteelWorksRouteImport } from './routes/locations/regionalSteelWorks'
-import { Route as LocationsPrecisionManufacturingLLCRouteImport } from './routes/locations/precisionManufacturingLLC'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const LoginRoute = LoginRouteImport.update({
@@ -36,18 +34,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocationsRegionalSteelWorksRoute =
-  LocationsRegionalSteelWorksRouteImport.update({
-    id: '/locations/regionalSteelWorks',
-    path: '/locations/regionalSteelWorks',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LocationsPrecisionManufacturingLLCRoute =
-  LocationsPrecisionManufacturingLLCRouteImport.update({
-    id: '/locations/precisionManufacturingLLC',
-    path: '/locations/precisionManufacturingLLC',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -59,16 +45,12 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
-  '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
-  '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,26 +59,12 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/locations/precisionManufacturingLLC': typeof LocationsPrecisionManufacturingLLCRoute
-  '/locations/regionalSteelWorks': typeof LocationsRegionalSteelWorksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/contact'
-    | '/login'
-    | '/dashboard'
-    | '/locations/precisionManufacturingLLC'
-    | '/locations/regionalSteelWorks'
+  fullPaths: '/' | '/contact' | '/login' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/contact'
-    | '/login'
-    | '/dashboard'
-    | '/locations/precisionManufacturingLLC'
-    | '/locations/regionalSteelWorks'
+  to: '/' | '/contact' | '/login' | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -104,8 +72,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/_authenticated/dashboard'
-    | '/locations/precisionManufacturingLLC'
-    | '/locations/regionalSteelWorks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -113,8 +79,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
-  LocationsPrecisionManufacturingLLCRoute: typeof LocationsPrecisionManufacturingLLCRoute
-  LocationsRegionalSteelWorksRoute: typeof LocationsRegionalSteelWorksRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -147,20 +111,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/locations/regionalSteelWorks': {
-      id: '/locations/regionalSteelWorks'
-      path: '/locations/regionalSteelWorks'
-      fullPath: '/locations/regionalSteelWorks'
-      preLoaderRoute: typeof LocationsRegionalSteelWorksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/locations/precisionManufacturingLLC': {
-      id: '/locations/precisionManufacturingLLC'
-      path: '/locations/precisionManufacturingLLC'
-      fullPath: '/locations/precisionManufacturingLLC'
-      preLoaderRoute: typeof LocationsPrecisionManufacturingLLCRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -187,9 +137,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
-  LocationsPrecisionManufacturingLLCRoute:
-    LocationsPrecisionManufacturingLLCRoute,
-  LocationsRegionalSteelWorksRoute: LocationsRegionalSteelWorksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
