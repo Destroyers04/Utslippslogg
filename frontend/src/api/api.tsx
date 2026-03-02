@@ -25,7 +25,7 @@ export const getUserData = async (token: string): Promise<UserData> => {
   return response.data;
 };
 
-export const getSiteData = async (token: string): Promise<SiteData> => {
+export const getSiteData = async (token: string): Promise<SiteData[]> => {
   const response = await axios.get(`${API_URL}/get/site`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -34,3 +34,5 @@ export const getSiteData = async (token: string): Promise<SiteData> => {
   });
   return response.data;
 };
+
+// export const activity = async(token:string):Promise<>

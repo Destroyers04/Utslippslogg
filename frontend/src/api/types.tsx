@@ -13,4 +13,5 @@ export type SiteData = {
   site_id: number;
   name: string;
   location: string;
+  station_count: number;
 };
