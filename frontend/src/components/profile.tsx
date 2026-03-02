@@ -13,6 +13,9 @@ function Profile() {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.clear("token");
+    localStorage.clear("user_name");
+    localStorage.clear("user_id");
+    localStorage.clear("user_email");
     navigate({ to: indexRoute.to });
   };
 

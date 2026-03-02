@@ -2,14 +2,21 @@ import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
 import mountains from "@/assets/mountains.jpg";
 import { LoginForm } from "@/components/login-form";
+import { getUserData } from "@/api/api";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
+import axios from "axios";
 
 export const Route = createFileRoute("/login")({
-  beforeLoad: () => {
-    // Check if the user is already logged in by looking for a token in localStorage.
+  beforeLoad: async () => {
+    // Check if the user is already logged in by first seeing if a token exists then verifying the token in localStorage.
     const token = localStorage.getItem("token");
-    if (token) {
+    if (!token) return;
+    try {
+      await getUserData(token);
       throw redirect({ to: dashboardRoute.to });
+    } catch (error: AxiosError) {
+      console.log("caught");
+      if (!axios.isAxiosError(error)) throw error;
     }
   },
   component: LoginPage,
