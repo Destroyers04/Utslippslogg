@@ -16,15 +16,11 @@ export const getLogInToken = async (
 };
 
 export const getUserData = async (token: string): Promise<UserData> => {
-  try {
-    const response = await axios.get(`${API_URL}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        accept: "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await axios.get(`${API_URL}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: "application/json",
+    },
+  });
+  return response.data;
 };

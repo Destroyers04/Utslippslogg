@@ -11,17 +11,11 @@ export const Route = createFileRoute("/_authenticated")({
     if (!token) throw redirect({ to: loginRoute.to });
     // Verify if the token is valid
     try {
-      const userData = await getUserData(token);
-      localStorage.setItem("user_name", userData.name);
-      localStorage.setItem("user_id", userData.user_id);
-      localStorage.setItem("user_email", userData.email);
-    } catch (error: AxiosError) {
+      await getUserData(token);
+    } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       // If not valid, clear it
-      localStorage.clear("token");
-      localStorage.clear("user_name");
-      localStorage.clear("user_id");
-      localStorage.clear("user_email");
+      localStorage.removeItem("token");
       throw redirect({ to: loginRoute.to });
     }
   },

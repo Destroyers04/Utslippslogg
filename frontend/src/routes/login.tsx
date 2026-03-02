@@ -14,8 +14,7 @@ export const Route = createFileRoute("/login")({
     try {
       await getUserData(token);
       throw redirect({ to: dashboardRoute.to });
-    } catch (error: AxiosError) {
-      console.log("caught");
+    } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
     }
   },
