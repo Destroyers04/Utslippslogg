@@ -1,4 +1,4 @@
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { SiteCollection } from "@/components/site-collection";
 import { Route as authenticatedRoute } from "@/routes/_authenticated/route";
 
