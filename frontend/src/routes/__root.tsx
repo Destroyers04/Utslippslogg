@@ -1,6 +1,7 @@
-import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Toaster } from "@/components/ui/sonner";
+import type { QueryClient } from "@tanstack/react-query";
 
 const RootLayout = () => {
   return (
@@ -11,5 +12,10 @@ const RootLayout = () => {
     </>
   );
 };
+interface MyRouterContext {
+  queryClient: QueryClient;
+}
 
-export const Route = createRootRoute({ component: RootLayout });
+export const Route = createRootRouteWithContext<MyRouterContext>()({
+  component: RootLayout,
+});

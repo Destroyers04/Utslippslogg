@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 
 function Navbar() {
   return (
-    <nav className="flex justify-between items-center max-w-screen-xl mx-20 mt-4 2xl:mx-auto">
+    <nav className="flex justify-between items-center max-w-screen-xl mx-8 mt-4 2xl:mx-auto">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>

@@ -8,3 +8,9 @@ export type UserData = {
   user_id: number;
   email: string;
 };
+
+export type SiteData = {
+  site_id: number;
+  name: string;
+  location: string;
+};

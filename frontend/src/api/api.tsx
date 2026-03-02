@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Token, UserData } from "@/api/types";
+import type { Token, UserData, SiteData } from "@/api/types";
 // Check API.md or "http://127.0.0.1:8000/docs#" for more information on the API endpoints and expected responses.
 const API_URL = "http://127.0.0.1:8000";
 
@@ -17,6 +17,16 @@ export const getLogInToken = async (
 
 export const getUserData = async (token: string): Promise<UserData> => {
   const response = await axios.get(`${API_URL}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      accept: "application/json",
+    },
+  });
+  return response.data;
+};
+
+export const getSiteData = async (token: string): Promise<SiteData> => {
+  const response = await axios.get(`${API_URL}/get/site`, {
     headers: {
       Authorization: `Bearer ${token}`,
       accept: "application/json",
