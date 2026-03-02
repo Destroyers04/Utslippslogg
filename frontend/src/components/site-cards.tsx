@@ -10,7 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { MapPin, Cctv } from "lucide-react";
-
+import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
+import { Route as siteRoute } from "@/routes/_authenticated/site.$siteId";
+import { useNavigate } from "@tanstack/react-router";
 interface Props {
   site_id: number;
   site_name: string;
@@ -26,6 +28,10 @@ function SiteCards({
   station_count,
   active,
 }: Props) {
+  const navigate = useNavigate({ from: dashboardRoute.to });
+  const handleClick = async () => {
+    await navigate({ to: siteRoute.to, params: { siteId: String(site_id) } });
+  };
   return (
     <Card className="relative mx-auto w-full max-w-xs lg:max-w-sm pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
@@ -58,7 +64,9 @@ function SiteCards({
         </CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button className="w-full">View Site</Button>
+        <Button onClick={handleClick} className="w-full">
+          View Site
+        </Button>
       </CardFooter>
     </Card>
   );

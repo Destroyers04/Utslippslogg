@@ -14,6 +14,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedSiteSiteIdRouteImport } from './routes/_authenticated/site.$siteId'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -39,18 +40,25 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSiteSiteIdRoute = AuthenticatedSiteSiteIdRouteImport.update({
+  id: '/site/$siteId',
+  path: '/site/$siteId',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/site/$siteId': typeof AuthenticatedSiteSiteIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/site/$siteId': typeof AuthenticatedSiteSiteIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,12 +67,13 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/site/$siteId': typeof AuthenticatedSiteSiteIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contact' | '/login' | '/dashboard'
+  fullPaths: '/' | '/contact' | '/login' | '/dashboard' | '/site/$siteId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/login' | '/dashboard'
+  to: '/' | '/contact' | '/login' | '/dashboard' | '/site/$siteId'
   id:
     | '__root__'
     | '/'
@@ -72,6 +81,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/_authenticated/dashboard'
+    | '/_authenticated/site/$siteId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,15 +128,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/site/$siteId': {
+      id: '/_authenticated/site/$siteId'
+      path: '/site/$siteId'
+      fullPath: '/site/$siteId'
+      preLoaderRoute: typeof AuthenticatedSiteSiteIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSiteSiteIdRoute: typeof AuthenticatedSiteSiteIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSiteSiteIdRoute: AuthenticatedSiteSiteIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
