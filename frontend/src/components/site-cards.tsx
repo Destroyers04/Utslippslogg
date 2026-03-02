@@ -27,7 +27,7 @@ function SiteCards({
   active,
 }: Props) {
   return (
-    <Card className="relative mx-auto w-full max-w-sm pt-0">
+    <Card className="relative mx-auto w-full max-w-xs lg:max-w-sm pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
       <img
         src={`https://picsum.photos/seed/${site_id}/400/200`}
