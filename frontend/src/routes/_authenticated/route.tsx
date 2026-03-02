@@ -5,7 +5,7 @@ import { getUserData } from "@/api/api";
 import axios from "axios";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: async ({ context }) => {
+  beforeLoad: async () => {
     const token = localStorage.getItem("token");
     // Check if there is an existing token, if not throw to login
     if (!token) throw redirect({ to: loginRoute.to });
