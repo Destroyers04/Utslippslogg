@@ -55,7 +55,7 @@ function SiteCards({
             {active ? "Operating" : "Inactive"}
           </Badge>
         </CardAction>
-        <CardTitle>{site_name}</CardTitle>
+        <CardTitle className="truncate pb-2">{site_name}</CardTitle>
         <CardDescription>
           <div className="flex items-center gap-1">
             <MapPin className="h-4 w-4" />

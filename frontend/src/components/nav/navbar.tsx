@@ -5,7 +5,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Profile } from "@/components/profile";
+import { Profile } from "@/components/nav/profile";
 import { Link } from "@tanstack/react-router";
 import { Route as indexRoute } from "@/routes/index";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
