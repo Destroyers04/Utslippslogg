@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated")({
     const token = localStorage.getItem("token");
     // Check if there is an existing token, if not throw to login
     if (!token) throw redirect({ to: loginRoute.to });
-    // Verify if the token is valid, if valid return it
+    // Verify if the token is valid, if valid return user data
     try {
       const userData = await getUserData(token);
       return { userData };

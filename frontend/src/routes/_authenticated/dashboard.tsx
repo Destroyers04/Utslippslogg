@@ -3,6 +3,7 @@ import { SiteCollection } from "@/components/site-collection";
 import { Route as authenticatedRoute } from "@/routes/_authenticated/route";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  staleTime: 0,
   loader: ({ context }) => context.userData,
   component: DashboardPage,
 });
