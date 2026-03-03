@@ -31,7 +31,10 @@ function SiteCards({
 }: Props) {
   const navigate = useNavigate({ from: dashboardRoute.to });
   const handleClick = async () => {
-    await navigate({ to: siteRoute.to, params: { siteId: String(site_id) } });
+    await navigate({
+      to: siteRoute.to,
+      params: { siteId: String(site_id) },
+    });
   };
   return (
     <Card className="relative mx-auto w-full max-w-xs lg:max-w-sm pt-0">

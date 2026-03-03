@@ -46,7 +46,7 @@ async def fetch_stations(site_id: int, db: db_dependency, user_info: Annotated[d
 
 #Get all measurements from a given station 
 @router.get("/site/{site_id}/station/{station_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
-async def fetch_station_measurements(site_id: int, station_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
+async def fetch_station_measurements(site_id: int, station_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)], skip: int = 0, limit: int = 10):
     # Get the user's id from the token
     user_id = user_info["user_id"]
 
@@ -61,11 +61,11 @@ async def fetch_station_measurements(site_id: int, station_id: int, db: db_depen
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="station not found")
 
     # Return the measurements for the station with unit data
-    measurements = db.query(Measurement).join(Unit).filter(Measurement.station_id == station_id).order_by(Measurement.time.desc()).all()
+    measurements = db.query(Measurement).join(Unit).filter(Measurement.station_id == station_id).order_by(Measurement.time.desc()).offset(skip).limit(limit).all()
     return measurements
 
 @router.get("/site/{site_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
-async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
+async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)], skip: int = 0, limit: int = 10):
     # Get the user's id from the token
     user_id = user_info["user_id"]
 
@@ -73,14 +73,14 @@ async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Ann
     site = db.query(Site).filter(Site.site_id == site_id).first()
     if not site:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Site not found")
-    
+
     # Check if the user has access to the site
     access = db.query(UserSiteAccess).filter(UserSiteAccess.user_id == user_id, UserSiteAccess.site_id == site_id).first()
     if not access:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You do not have access to this site")
-    
+
     # Return all measurements for the site with unit data
-    measurements = db.query(Measurement).join(Station).join(Unit).filter(Station.site_id == site_id).order_by(Measurement.time.desc()).all()
+    measurements = db.query(Measurement).join(Station).join(Unit).filter(Station.site_id == site_id).order_by(Measurement.time.desc()).offset(skip).limit(limit).all()
     return measurements
     
 #Get all units

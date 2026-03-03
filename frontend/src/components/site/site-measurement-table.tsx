@@ -3,19 +3,53 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { MeasurementData, UnitData } from "@/api/types";
+import type { UnitData } from "@/api/types";
+import { useQuery } from "@tanstack/react-query";
+import { getSiteMeasurementsData } from "@/api/api";
+import { useEffect } from "react";
 
 interface Props {
-  measurements: MeasurementData[];
+  siteId: number;
   units: UnitData[];
+  page: number;
+  limit: number;
+  onHasNextPage: (hasNext: boolean) => void;
 }
 
-function MeasurementTable({ measurements, units }: Props) {
+function MeasurementTable({
+  siteId,
+  units,
+  page,
+  limit,
+  onHasNextPage,
+}: Props) {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["siteMeasurementData", siteId, page, limit],
+    queryFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      return getSiteMeasurementsData(
+        localStorage.getItem("token")!,
+        siteId,
+        page,
+        // Fetch one extra to check if next page exists
+        limit + 1,
+      );
+    },
+  });
+
+  const hasNextPage = (data?.length ?? 0) > limit;
+  const measurements = data?.slice(0, limit) ?? [];
+
+  useEffect(() => {
+    if (data) onHasNextPage(hasNextPage);
+  }, [data]);
+
+  if (error) return "An error has occurred: " + error.message;
+
   // Display correct measurement unit
   const find_unit = (measurement_unit_id: number) => {
     return units.find((unit) => unit.unit_id === measurement_unit_id)?.unit;
@@ -44,7 +78,7 @@ function MeasurementTable({ measurements, units }: Props) {
     };
   };
   return (
-    <Table className="mt-12">
+    <Table className="mt-4 mb-4">
       <TableCaption>A list of the sites recent measurements.</TableCaption>
       <TableHeader>
         <TableRow>
@@ -56,37 +90,41 @@ function MeasurementTable({ measurements, units }: Props) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {measurements.map((measurement) => (
-          <TableRow key={measurement.measurement_id}>
-            <TableCell className="font-medium w-12">
-              {measurement.measurement_id}
-            </TableCell>
-            <TableCell className="w-24 md:w-36">
-              <span className="md:hidden">
-                {parse_time(measurement.time).short}
-              </span>
-              <span className="hidden md:inline">
-                {parse_time(measurement.time).full}
-              </span>
-            </TableCell>
-            <TableCell className="w-12 text-center md:w-24 md:text-left">
-              {measurement.station_id}
-            </TableCell>
-            <TableCell className="w-24 hidden md:table-cell">
-              {measurement.type}
-            </TableCell>
-            <TableCell className="text-right">
-              {measurement.value} {find_unit(measurement.unit_id)}
+        {isPending ? (
+          <TableRow>
+            <TableCell colSpan={5} className="h-32 text-center">
+              <div className="flex justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
+              </div>
             </TableCell>
           </TableRow>
-        ))}
+        ) : (
+          measurements.map((measurement) => (
+            <TableRow key={measurement.measurement_id}>
+              <TableCell className="font-medium w-12">
+                {measurement.measurement_id}
+              </TableCell>
+              <TableCell className="w-24 md:w-36">
+                <span className="md:hidden">
+                  {parse_time(measurement.time).short}
+                </span>
+                <span className="hidden md:inline">
+                  {parse_time(measurement.time).full}
+                </span>
+              </TableCell>
+              <TableCell className="w-12 text-center md:w-24 md:text-left">
+                {measurement.station_id}
+              </TableCell>
+              <TableCell className="w-24 hidden md:table-cell">
+                {measurement.type}
+              </TableCell>
+              <TableCell className="text-right">
+                {measurement.value} {find_unit(measurement.unit_id)}
+              </TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
     </Table>
   );
 }

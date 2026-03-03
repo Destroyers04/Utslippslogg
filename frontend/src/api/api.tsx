@@ -45,6 +45,8 @@ export const getSiteData = async (token: string): Promise<SiteData[]> => {
 export const getSiteMeasurementsData = async (
   token: string,
   site_id: number,
+  page: number = 0,
+  limit: number = 10,
 ): Promise<MeasurementData[]> => {
   const response = await axios.get(
     `${API_URL}/get/site/${site_id}/measurements`,
@@ -53,6 +55,7 @@ export const getSiteMeasurementsData = async (
         Authorization: `Bearer ${token}`,
         accept: "application/json",
       },
+      params: { skip: page * limit, limit },
     },
   );
   return response.data;
@@ -62,6 +65,8 @@ export const getStationMeasurementsData = async (
   token: string,
   station_id: number,
   site_id: number,
+  page: number = 0,
+  limit: number = 10,
 ): Promise<MeasurementData[]> => {
   const response = await axios.get(
     `${API_URL}/get/site/${site_id}/station/${station_id}/measurements`,
@@ -70,6 +75,7 @@ export const getStationMeasurementsData = async (
         Authorization: `Bearer ${token}`,
         accept: "application/json",
       },
+      params: { skip: page * limit, limit },
     },
   );
   return response.data;

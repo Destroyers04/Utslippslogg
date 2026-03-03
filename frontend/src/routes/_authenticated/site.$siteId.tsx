@@ -1,9 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { getSiteMeasurementsData, getSiteData, getUnitsData } from "@/api/api";
+import { getSiteData, getUnitsData } from "@/api/api";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
 import { SiteHeader } from "@/components/site/site-header";
 import { MeasurementTable } from "@/components/site/site-measurement-table";
-import { useQuery } from "@tanstack/react-query";
+import { TablePagination } from "@/components/site/site-table-pagination";
+import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/site/$siteId")({
   staleTime: 0,
@@ -23,26 +25,32 @@ export const Route = createFileRoute("/_authenticated/site/$siteId")({
 function SitePage() {
   const site = Route.useRouteContext().site;
   const units = Route.useLoaderData();
-  const { isPending, error, data } = useQuery({
-    queryKey: ["siteMeasurementData"],
-    queryFn: () =>
-      getSiteMeasurementsData(localStorage.getItem("token")!, site.site_id),
-  });
-
-  if (isPending)
-    return (
-      <div className="flex justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary" />
-      </div>
-    );
-
-  if (error) return "An error has occurred: " + error.message;
-  //placeholder variable for status site, too lazy atm
   const active = true;
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [hasNextPage, setHasNextPage] = useState(false);
+
   return (
     <div className="max-w-screen-xl mx-auto mt-8 px-8">
       <SiteHeader site={site} active={active} />
-      <MeasurementTable measurements={data} units={units} />
+      <Card className="mt-8">
+        <CardContent>
+          <MeasurementTable
+            siteId={site.site_id}
+            units={units}
+            page={page}
+            limit={limit}
+            onHasNextPage={setHasNextPage}
+          />
+          <TablePagination
+            page={page}
+            setPage={setPage}
+            limit={limit}
+            setLimit={setLimit}
+            hasNextPage={hasNextPage}
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }
