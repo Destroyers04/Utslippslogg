@@ -1,5 +1,5 @@
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/nav/navbar";
 import { Route as loginRoute } from "@/routes/login";
 import { getUserData } from "@/api/api";
 import axios from "axios";

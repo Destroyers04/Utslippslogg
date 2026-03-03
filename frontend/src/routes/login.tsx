@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
 import { GalleryVerticalEnd } from "lucide-react";
 import mountains from "@/assets/mountains.jpg";
-import { LoginForm } from "@/components/login-form";
+import { LoginForm } from "@/components/login/login-form";
 import { getUserData } from "@/api/api";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
 import axios from "axios";
