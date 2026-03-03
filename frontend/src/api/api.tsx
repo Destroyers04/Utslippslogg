@@ -4,6 +4,7 @@ import type {
   UserData,
   SiteData,
   StationData,
+  UnitData,
   MeasurementData,
 } from "@/api/types";
 // Check API.md or "http://127.0.0.1:8000/docs#" for more information on the API endpoints and expected responses.
@@ -71,5 +72,10 @@ export const getStationMeasurementsData = async (
       },
     },
   );
+  return response.data;
+};
+
+export const getUnitsData = async (): Promise<UnitData[]> => {
+  const response = await axios.get(`${API_URL}/get/units`);
   return response.data;
 };
