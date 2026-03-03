@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -13,6 +12,8 @@ import { MapPin, Cctv } from "lucide-react";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
 import { Route as siteRoute } from "@/routes/_authenticated/site.$siteId";
 import { useNavigate } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
+
 interface Props {
   site_id: number;
   site_name: string;
@@ -44,7 +45,12 @@ function SiteCards({
         <CardAction>
           <Badge
             variant={active ? "secondary" : "destructive"}
-            className={active ? "bg-green-300" : "bg-red-300"}
+            className={cn(
+              "font-bold text-sm tracking-tight px-3 py-1 rounded-full",
+              active
+                ? "text-green-800 bg-green-100"
+                : "text-red-800 bg-red-100",
+            )}
           >
             {active ? "Operating" : "Inactive"}
           </Badge>
