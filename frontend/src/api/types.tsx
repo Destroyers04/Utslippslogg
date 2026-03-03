@@ -14,4 +14,26 @@ export type SiteData = {
   name: string;
   location: string;
   station_count: number;
+  stations: StationData[];
+};
+
+export type StationData = {
+  station_id: number;
+  name: string;
+  location_description: string;
+  site_id: number;
+};
+
+export type MeasurementData = {
+  measurement_id: number;
+  value: number;
+  time: Date;
+  station_id: number;
+  unit_id: number;
+  type: object;
+};
+export type UnitData = {
+  unit_id: number;
+  unit: string;
+  emission: string;
 };

@@ -1,5 +1,11 @@
 import axios from "axios";
-import type { Token, UserData, SiteData } from "@/api/types";
+import type {
+  Token,
+  UserData,
+  SiteData,
+  StationData,
+  MeasurementData,
+} from "@/api/types";
 // Check API.md or "http://127.0.0.1:8000/docs#" for more information on the API endpoints and expected responses.
 const API_URL = "http://127.0.0.1:8000";
 
@@ -35,4 +41,35 @@ export const getSiteData = async (token: string): Promise<SiteData[]> => {
   return response.data;
 };
 
-// export const activity = async(token:string):Promise<>
+export const getSiteMeasurementsData = async (
+  token: string,
+  site_id: number,
+): Promise<MeasurementData[]> => {
+  const response = await axios.get(
+    `${API_URL}/get/site/${site_id}/measurements`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+      },
+    },
+  );
+  return response.data;
+};
+
+export const getStationMeasurementsData = async (
+  token: string,
+  station_id: number,
+  site_id: number,
+): Promise<MeasurementData[]> => {
+  const response = await axios.get(
+    `${API_URL}/get/site/${site_id}/station/${station_id}/measurements`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+      },
+    },
+  );
+  return response.data;
+};
