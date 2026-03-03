@@ -1,3 +1,5 @@
+import type { NumberFieldDecrement } from "@base-ui/react";
+
 export type Token = {
   access_token: string;
   token_type: string;
@@ -27,11 +29,12 @@ export type StationData = {
 export type MeasurementData = {
   measurement_id: number;
   value: number;
-  time: Date;
+  time: string;
   station_id: number;
   unit_id: number;
-  type: object;
+  type: string;
 };
+
 export type UnitData = {
   unit_id: number;
   unit: string;
