@@ -1,8 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { getSiteMeasurementsData, getSiteData } from "@/api/api";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
-import { SiteHeader } from "@/components/site/siteheader";
-import { act } from "react";
+import { SiteHeader } from "@/components/site/site-header";
+import { MeasurementTable } from "@/components/site/site-measurement-table";
+import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated/site/$siteId")({
   staleTime: 0,
@@ -13,25 +14,26 @@ export const Route = createFileRoute("/_authenticated/site/$siteId")({
     if (!site) throw redirect({ to: dashboardRoute.to });
     return { site };
   },
-  loader: async ({ context }) => {
-    const siteMeasurements = await getSiteMeasurementsData(
-      localStorage.getItem("token")!,
-      context.site.site_id,
-    );
-    const site = context.site;
-    return { siteMeasurements, site };
-  },
   component: SitePage,
 });
 
 function SitePage() {
-  const { siteMeasurements, site } = Route.useLoaderData();
+  const site = Route.useRouteContext().site;
+  const { isPending, error, data } = useQuery({
+    queryKey: ["siteMeasurementData"],
+    queryFn: () =>
+      getSiteMeasurementsData(localStorage.getItem("token")!, site.site_id),
+  });
 
+  if (isPending) return "Loading...";
+
+  if (error) return "An error has occurred: " + error.message;
   //placeholder variable for status site, too lazy atm
   const active = true;
   return (
     <div className="max-w-screen-xl mx-auto mt-8 px-8">
       <SiteHeader site={site} active={active} />
+      <MeasurementTable measurements={data} />
     </div>
   );
 }
