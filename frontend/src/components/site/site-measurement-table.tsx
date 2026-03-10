@@ -94,7 +94,7 @@ function MeasurementTable({
       <TableCaption>A list of the sites recent measurements.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-12">ID</TableHead>
+          <TableHead className="w-24 hidden md:table-cell">ID</TableHead>
           <TableHead className="w-24 md:w-36">Time</TableHead>
           <TableHead className="w-12 md:w-24">Station id</TableHead>
           <TableHead className="w-24 hidden md:table-cell">Type</TableHead>
@@ -113,21 +113,29 @@ function MeasurementTable({
         ) : (
           measurements.map((measurement) => (
             <TableRow key={measurement.measurement_id}>
-              <TableCell className="font-medium w-12">
+              <TableCell className=" hidden md:inline font-medium">
                 {measurement.measurement_id}
               </TableCell>
-              <TableCell className="w-24 md:w-36">
+              <TableCell>
+                {/* mobile display */}
                 <span className="md:hidden">
-                  {parse_time(measurement.time).short}
+                  <div>{parse_time(measurement.time).short.time}</div>
+                  <div className="text-muted-foreground">
+                    {parse_time(measurement.time).short.date}
+                  </div>
                 </span>
+                {/* medium screen display */}
                 <span className="hidden md:inline">
-                  {parse_time(measurement.time).full}
+                  <div>{parse_time(measurement.time).full.time}</div>
+                  <div className="text-muted-foreground">
+                    {parse_time(measurement.time).full.date}
+                  </div>
                 </span>
               </TableCell>
-              <TableCell className="w-12 text-center md:w-24 md:text-left">
+              <TableCell className="text-center md:text-left">
                 {measurement.station_id}
               </TableCell>
-              <TableCell className="w-24 hidden md:table-cell">
+              <TableCell className="hidden md:table-cell">
                 {measurement.type}
               </TableCell>
               <TableCell className="text-right">
