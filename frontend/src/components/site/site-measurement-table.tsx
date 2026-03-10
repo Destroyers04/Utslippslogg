@@ -123,8 +123,15 @@ function MeasurementTable({
                 {measurement.type}
               </TableCell>
               <TableCell className="text-right">
-                {measurement.value} {find_unit(measurement.unit_id).unit_unit}
-                {find_unit(measurement.unit_id).unit_value}
+                <span className="flex flex-col">
+                  <span>
+                    {measurement.value}{" "}
+                    {find_unit(measurement.unit_id).unit_unit}
+                  </span>
+                  <span className="text-muted-foreground">
+                    {find_unit(measurement.unit_id).unit_value}
+                  </span>
+                </span>
               </TableCell>
             </TableRow>
           ))
