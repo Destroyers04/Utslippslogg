@@ -52,7 +52,11 @@ function MeasurementTable({
 
   // Display correct measurement unit
   const find_unit = (measurement_unit_id: number) => {
-    return units.find((unit) => unit.unit_id === measurement_unit_id)?.unit;
+    const unit = units.find((unit) => unit.unit_id === measurement_unit_id);
+    if (!unit) return { unit_unit: "Unknown", unit_value: "Unknown" };
+    const unit_unit = unit.unit;
+    const unit_value = unit.emission;
+    return { unit_unit, unit_value };
   };
   // Parse string from ISO format to locale time
   const parse_time = (measurement_time: string) => {
@@ -119,7 +123,8 @@ function MeasurementTable({
                 {measurement.type}
               </TableCell>
               <TableCell className="text-right">
-                {measurement.value} {find_unit(measurement.unit_id)}
+                {measurement.value} {find_unit(measurement.unit_id).unit_unit}
+                {find_unit(measurement.unit_id).unit_value}
               </TableCell>
             </TableRow>
           ))
