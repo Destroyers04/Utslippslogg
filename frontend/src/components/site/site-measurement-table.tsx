@@ -62,23 +62,31 @@ function MeasurementTable({
   const parse_time = (measurement_time: string) => {
     const date = new Date(measurement_time);
     return {
-      short: date.toLocaleString(undefined, {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }),
-      full: date.toLocaleString(undefined, {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      }),
+      short: {
+        time: date.toLocaleString(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+        date: date.toLocaleString(undefined, {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+      },
+      full: {
+        time: date.toLocaleString(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }),
+        date: date.toLocaleString(undefined, {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+      },
     };
   };
   return (
