@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from typing import Annotated
 from models.userData import UserSiteAccess
 from models.site import Site, Station
@@ -68,7 +68,7 @@ async def fetch_station_measurements(site_id: int, station_id: int, db: db_depen
     return measurements
 
 @router.get("/site/{site_id}/measurements", status_code=status.HTTP_200_OK, response_model=list[MeasurementResponse])
-async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)], skip: int = 0, limit: int = 10, unit_id: int = None):
+async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)], skip: int = 0, limit: int = 10, unit_ids: list[int] = Query(default=[])):
     # Get the user's id from the token
     user_id = user_info["user_id"]
 
@@ -84,8 +84,8 @@ async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Ann
 
     # Return all measurements for the site with optional unit filter
     query = db.query(Measurement).join(Station).join(Unit).filter(Station.site_id == site_id)
-    if unit_id is not None:
-        query = query.filter(Measurement.unit_id == unit_id)
+    if len(unit_ids) != 0:
+        query = query.filter(Measurement.unit_id.in_(unit_ids))
     measurements = query.order_by(Measurement.time.desc(), Measurement.measurement_id.desc()).offset(skip).limit(limit).all()
     return measurements
 
