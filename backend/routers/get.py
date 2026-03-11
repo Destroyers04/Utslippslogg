@@ -90,7 +90,7 @@ async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Ann
     return measurements
 
 @router.get("/site/{site_id}/measurements/units", status_code=status.HTTP_200_OK, response_model=list[UnitResponse])
-async def fetch_all_measurement_units_site(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)],station_id:int = None):
+async def  fetch_site_units(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)],station_id:int = None):
     # Get the user's id from the token
     user_id = user_info["user_id"]
 
