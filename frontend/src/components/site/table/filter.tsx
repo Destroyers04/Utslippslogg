@@ -19,9 +19,15 @@ import { Filter } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuGroup,
   DropdownMenuContent,
+  DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { ChevronLeft } from "lucide-react";
+import { FilterX } from "lucide-react";
 
 interface Props {
   siteId: number;
@@ -30,6 +36,7 @@ interface Props {
 
 function TableFilter({ siteId, stationId }: Props) {
   const [value, setValue] = useState<UnitData[]>([]);
+  const [pending, setPending] = useState<UnitData[]>([]);
   const anchor = useComboboxAnchor();
   const { data: units, isPending } = useQuery({
     queryKey: ["siteUnits", siteId, stationId],
@@ -38,17 +45,15 @@ function TableFilter({ siteId, stationId }: Props) {
   });
 
   useEffect(() => {
-    if (units) setValue(units);
+    if (units) {
+      setValue(units);
+    }
   }, [units]);
-
-  useEffect(() => {
-    console.log(value);
-  }, [value]);
 
   if (isPending) return <>Loading</>;
 
   const toggle = (unit: UnitData) => {
-    setValue((prev) =>
+    setPending((prev) =>
       prev.some((u) => u.unit_id === unit.unit_id)
         ? prev.filter((u) => u.unit_id !== unit.unit_id)
         : [...prev, unit],
@@ -56,7 +61,7 @@ function TableFilter({ siteId, stationId }: Props) {
   };
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-4 pb-2">
       <Combobox
         multiple
         autoHighlight
@@ -64,46 +69,71 @@ function TableFilter({ siteId, stationId }: Props) {
         value={value}
         onValueChange={setValue}
       >
-        <ComboboxChips ref={anchor} className="max-w-xs">
+        <ComboboxChips ref={anchor} className=" w-full">
           <ComboboxValue>
             {(values: UnitData[]) => (
               <Fragment>
                 {values.map((val) => (
                   <ComboboxChip key={val.unit_id}>{val.emission}</ComboboxChip>
                 ))}
-                <ComboboxChipsInput placeholder="Search..." />
               </Fragment>
             )}
           </ComboboxValue>
         </ComboboxChips>
-        <ComboboxContent anchor={anchor}>
-          <ComboboxEmpty>No units found.</ComboboxEmpty>
-          <ComboboxList>
-            {(unit) => (
-              <ComboboxItem key={unit.unit_id} value={unit}>
-                {unit.emission}
-              </ComboboxItem>
-            )}
-          </ComboboxList>
-        </ComboboxContent>
       </Combobox>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="flex gap-1 self-center">
-            <Filter className="size-4" />
+          <Button variant="outline" className="flex gap-1 self-start shrink-0">
+            <Filter className="size-4 color-orange-300" />
             Filter
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          {(units ?? []).map((unit) => (
-            <DropdownMenuCheckboxItem
-              key={unit.unit_id}
-              checked={value.some((u) => u.unit_id === unit.unit_id)}
-              onCheckedChange={() => toggle(unit)}
-            >
-              {unit.emission}
-            </DropdownMenuCheckboxItem>
-          ))}
+        <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
+          <DropdownMenuGroup>
+            <div className="flex justify-between">
+              <DropdownMenuLabel>Emissions</DropdownMenuLabel>
+              <DropdownMenuItem
+                className="text-muted-foreground"
+                onSelect={() => {
+                  setValue(pending);
+                  setPending([]);
+                }}
+              >
+                <FilterX />
+              </DropdownMenuItem>
+            </div>
+            <DropdownMenuSeparator />
+            {(units ?? []).map((unit) => (
+              <DropdownMenuCheckboxItem
+                className=""
+                key={unit.unit_id}
+                checked={pending.some((u) => u.unit_id === unit.unit_id)}
+                onCheckedChange={() => toggle(unit)}
+                onSelect={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <span className="flex flex-col">
+                  <span>{unit.emission}</span>
+                  <span className="text-muted-foreground text-xs">
+                    {unit.unit}
+                  </span>
+                </span>
+              </DropdownMenuCheckboxItem>
+            ))}
+            <DropdownMenuSeparator />
+            <div className="flex justify-center p-1">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setValue(pending);
+                  setPending([]);
+                }}
+              >
+                Apply
+              </Button>
+            </div>
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
