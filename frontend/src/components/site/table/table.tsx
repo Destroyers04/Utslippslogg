@@ -15,6 +15,7 @@ import { useEffect } from "react";
 interface Props {
   siteId: number;
   units: UnitData[];
+  filteredUnits: UnitData[];
   page: number;
   limit: number;
   onHasNextPage: (hasNext: boolean) => void;
@@ -23,6 +24,7 @@ interface Props {
 function MeasurementTable({
   siteId,
   units,
+  filteredUnits,
   page,
   limit,
   onHasNextPage,

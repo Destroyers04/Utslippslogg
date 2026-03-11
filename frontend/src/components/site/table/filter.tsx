@@ -5,11 +5,6 @@ import {
   Combobox,
   ComboboxChip,
   ComboboxChips,
-  ComboboxChipsInput,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxItem,
-  ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
 } from "@/components/ui/combobox";
@@ -26,17 +21,18 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
-import { ChevronLeft } from "lucide-react";
 import { FilterX } from "lucide-react";
 
 interface Props {
   siteId: number;
   stationId?: number;
+  onFilterChange: (units: UnitData[]) => void;
 }
 
-function TableFilter({ siteId, stationId }: Props) {
+function TableFilter({ siteId, stationId, onFilterChange }: Props) {
   const [value, setValue] = useState<UnitData[]>([]);
   const [pending, setPending] = useState<UnitData[]>([]);
+  const [open, setOpen] = useState(false);
   const anchor = useComboboxAnchor();
   const { data: units, isPending } = useQuery({
     queryKey: ["siteUnits", siteId, stationId],
@@ -47,6 +43,8 @@ function TableFilter({ siteId, stationId }: Props) {
   useEffect(() => {
     if (units) {
       setValue(units);
+      setPending(units);
+      onFilterChange(units);
     }
   }, [units]);
 
@@ -81,7 +79,7 @@ function TableFilter({ siteId, stationId }: Props) {
           </ComboboxValue>
         </ComboboxChips>
       </Combobox>
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="flex gap-1 self-start shrink-0">
             <Filter className="size-4 color-orange-300" />
@@ -127,7 +125,8 @@ function TableFilter({ siteId, stationId }: Props) {
                 variant="outline"
                 onClick={() => {
                   setValue(pending);
-                  setPending([]);
+                  onFilterChange(pending);
+                  setOpen(false);
                 }}
               >
                 Apply
