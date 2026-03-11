@@ -47,6 +47,7 @@ export const getSiteMeasurementsData = async (
   site_id: number,
   page: number = 0,
   limit: number = 10,
+  unit_ids: number[] = [],
 ): Promise<MeasurementData[]> => {
   const response = await axios.get(
     `${API_URL}/get/site/${site_id}/measurements`,
@@ -55,7 +56,8 @@ export const getSiteMeasurementsData = async (
         Authorization: `Bearer ${token}`,
         accept: "application/json",
       },
-      params: { skip: page * limit, limit },
+      params: { skip: page * limit, limit, unit_ids },
+      paramsSerializer: { indexes: null },
     },
   );
   return response.data;

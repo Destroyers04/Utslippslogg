@@ -30,8 +30,9 @@ function MeasurementTable({
   onHasNextPage,
 }: Props) {
   const { isPending, error, data } = useQuery({
-    queryKey: ["siteMeasurementData", siteId, page, limit],
+    queryKey: ["siteMeasurementData", siteId, page, limit, filteredUnits],
     queryFn: async () => {
+      const filteredUnitIds = filteredUnits.map((u) => u.unit_id);
       await new Promise((resolve) => setTimeout(resolve, 2000));
       return getSiteMeasurementsData(
         localStorage.getItem("token")!,
@@ -39,6 +40,7 @@ function MeasurementTable({
         page,
         // Fetch one extra to check if next page exists
         limit + 1,
+        filteredUnitIds,
       );
     },
   });
