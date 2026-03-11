@@ -1,5 +1,3 @@
-import type { NumberFieldDecrement } from "@base-ui/react";
-
 export type Token = {
   access_token: string;
   token_type: string;
