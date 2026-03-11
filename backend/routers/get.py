@@ -90,7 +90,7 @@ async def fetch_all_measurements(site_id: int, db: db_dependency, user_info: Ann
     return measurements
 
 @router.get("/site/{site_id}/measurements/units", status_code=status.HTTP_200_OK, response_model=list[UnitResponse])
-async def fetch_all_measurement_units_site(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)]):
+async def fetch_all_measurement_units_site(site_id: int, db: db_dependency, user_info: Annotated[dict, Depends(get_current_user)],station_id:int = None):
     # Get the user's id from the token
     user_id = user_info["user_id"]
 
@@ -103,10 +103,12 @@ async def fetch_all_measurement_units_site(site_id: int, db: db_dependency, user
     site = db.query(Site).filter(Site.site_id == site_id).first()
     if not site:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Site not found")
-
-    # Return all measurement units used for the site
-    used_unit_ids = db.query(Measurement.unit_id).join(Station).filter(Station.site_id == site_id).distinct().subquery()
-
+    
+    # Return all measurement units used for the site with optional station_id filter
+    query = db.query(Measurement.unit_id).join(Station).filter(Station.site_id == site_id)
+    if station_id is not None:
+      query = query.filter(Station.station_id == station_id)
+    used_unit_ids = query.distinct().subquery()
     units = db.query(Unit).filter(Unit.unit_id.in_(used_unit_ids)).all()
     return units
 
