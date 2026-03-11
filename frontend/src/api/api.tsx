@@ -85,3 +85,21 @@ export const getUnitsData = async (): Promise<UnitData[]> => {
   const response = await axios.get(`${API_URL}/get/units`);
   return response.data;
 };
+
+export const getSiteUnitsData = async (
+  token: string,
+  site_id: number,
+  station_id?: number,
+): Promise<UnitData[]> => {
+  const response = await axios.get(
+    `${API_URL}/get/site/${site_id}/measurements/units`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: "application/json",
+      },
+      params: { station_id: station_id },
+    },
+  );
+  return response.data;
+};
