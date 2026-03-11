@@ -6,6 +6,7 @@ import { MeasurementTable } from "@/components/site/table/table";
 import { TablePagination } from "@/components/site/table/pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import type { UnitData } from "@/api/types";
 import { TableFilter } from "@/components/site/table/filter";
 
 export const Route = createFileRoute("/_authenticated/site/$siteId")({
@@ -30,16 +31,21 @@ function SitePage() {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [hasNextPage, setHasNextPage] = useState(false);
-
+  const [filteredUnits, setFilteredUnits] = useState<UnitData[]>([]);
+  console.log(filteredUnits);
   return (
     <div className="max-w-screen-xl mx-auto mt-8 px-8">
       <SiteHeader site={site} active={active} />
       <Card className="my-8">
         <CardContent>
-          <TableFilter siteId={site.site_id} />
+          <TableFilter
+            siteId={site.site_id}
+            onFilterChange={setFilteredUnits}
+          />
           <MeasurementTable
             siteId={site.site_id}
             units={units}
+            filteredUnits={filteredUnits}
             page={page}
             limit={limit}
             onHasNextPage={setHasNextPage}
