@@ -2,10 +2,11 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { getSiteData, getUnitsData } from "@/api/api";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
 import { SiteHeader } from "@/components/site/site-header";
-import { MeasurementTable } from "@/components/site/site-measurement-table";
-import { TablePagination } from "@/components/site/site-table-pagination";
+import { MeasurementTable } from "@/components/site/table/table";
+import { TablePagination } from "@/components/site/table/pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import { TableFilter } from "@/components/site/table/filter";
 
 export const Route = createFileRoute("/_authenticated/site/$siteId")({
   staleTime: 0,
@@ -33,8 +34,9 @@ function SitePage() {
   return (
     <div className="max-w-screen-xl mx-auto mt-8 px-8">
       <SiteHeader site={site} active={active} />
-      <Card className="mt-8">
+      <Card className="my-8">
         <CardContent>
+          <TableFilter siteId={site.site_id} />
           <MeasurementTable
             siteId={site.site_id}
             units={units}

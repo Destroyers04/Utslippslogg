@@ -90,7 +90,7 @@ function MeasurementTable({
     };
   };
   return (
-    <Table className="mt-4 mb-4">
+    <Table>
       <TableCaption>A list of the sites recent measurements.</TableCaption>
       <TableHeader>
         <TableRow>
