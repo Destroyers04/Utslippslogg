@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { getSiteData, getUnitsData } from "@/api/api";
+import { getSiteData, getUnitsData, getSiteMeasurementsData } from "@/api/api";
 import { Route as dashboardRoute } from "@/routes/_authenticated/dashboard";
 import { SiteHeader } from "@/components/site/site-header";
 import { MeasurementTable } from "@/components/site/table/table";
@@ -8,7 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import type { UnitData } from "@/api/types";
 import { TableFilter } from "@/components/site/table/filter";
-
+import { MeasurementChart } from "@/components/site/panel/chart";
+import { useQuery } from "@tanstack/react-query";
 export const Route = createFileRoute("/_authenticated/site/$siteId")({
   staleTime: 0,
   // Check if user has correct auth, save site to context if valid
@@ -30,12 +31,31 @@ function SitePage() {
   const active = true;
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
-  const [hasNextPage, setHasNextPage] = useState(false);
   const [filteredUnits, setFilteredUnits] = useState<UnitData[]>([]);
-  console.log(filteredUnits);
+
+  const { isPending, error, data } = useQuery({
+    queryKey: ["siteMeasurementData", site.site_id, page, limit, filteredUnits],
+    queryFn: () =>
+      getSiteMeasurementsData(
+        localStorage.getItem("token")!,
+        site.site_id,
+        page,
+        limit + 1,
+        filteredUnits.map((u) => u.unit_id),
+      ),
+  });
+
+  const hasNextPage = (data?.length ?? 0) > limit;
+  const measurements = data?.slice(0, limit) ?? [];
+
   return (
     <div className="max-w-screen-xl mx-auto mt-8 px-8">
       <SiteHeader site={site} active={active} />
+      <Card className="my-8">
+        <CardContent>
+          <MeasurementChart measurements={measurements} units={units} />
+        </CardContent>
+      </Card>
       <Card className="my-8">
         <CardContent>
           <TableFilter
@@ -43,12 +63,10 @@ function SitePage() {
             onFilterChange={setFilteredUnits}
           />
           <MeasurementTable
-            siteId={site.site_id}
             units={units}
-            filteredUnits={filteredUnits}
-            page={page}
-            limit={limit}
-            onHasNextPage={setHasNextPage}
+            measurements={measurements}
+            isPending={isPending}
+            error={error}
           />
           <TablePagination
             page={page}
