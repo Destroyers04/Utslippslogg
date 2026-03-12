@@ -7,51 +7,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { UnitData } from "@/api/types";
-import { useQuery } from "@tanstack/react-query";
-import { getSiteMeasurementsData } from "@/api/api";
-import { useEffect } from "react";
+import type { MeasurementData, UnitData } from "@/api/types";
 
 interface Props {
-  siteId: number;
   units: UnitData[];
-  filteredUnits: UnitData[];
-  page: number;
-  limit: number;
-  onHasNextPage: (hasNext: boolean) => void;
+  measurements: MeasurementData[];
+  isPending: boolean;
+  error: Error | null;
 }
 
-function MeasurementTable({
-  siteId,
-  units,
-  filteredUnits,
-  page,
-  limit,
-  onHasNextPage,
-}: Props) {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["siteMeasurementData", siteId, page, limit, filteredUnits],
-    queryFn: async () => {
-      const filteredUnitIds = filteredUnits.map((u) => u.unit_id);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      return getSiteMeasurementsData(
-        localStorage.getItem("token")!,
-        siteId,
-        page,
-        // Fetch one extra to check if next page exists
-        limit + 1,
-        filteredUnitIds,
-      );
-    },
-  });
-
-  const hasNextPage = (data?.length ?? 0) > limit;
-  const measurements = data?.slice(0, limit) ?? [];
-
-  useEffect(() => {
-    if (data) onHasNextPage(hasNextPage);
-  }, [data]);
-
+function MeasurementTable({ units, measurements, isPending, error }: Props) {
   if (error) return "An error has occurred: " + error.message;
 
   // Display correct measurement unit
