@@ -65,7 +65,11 @@ function TableFilter({ siteId, stationId, onFilterChange }: Props) {
         autoHighlight
         items={units ?? []}
         value={value}
-        onValueChange={setValue}
+        onValueChange={(next) => {
+          setValue(next);
+          setPending(next);
+          onFilterChange(next);
+        }}
       >
         <ComboboxChips ref={anchor} className=" w-full">
           <ComboboxValue>
@@ -91,10 +95,12 @@ function TableFilter({ siteId, stationId, onFilterChange }: Props) {
             <div className="flex justify-between">
               <DropdownMenuLabel>Emissions</DropdownMenuLabel>
               <DropdownMenuItem
+                variant="destructive"
                 className="text-muted-foreground"
                 onSelect={() => {
-                  setValue(pending);
                   setPending([]);
+                  setValue([]);
+                  onFilterChange([]);
                 }}
               >
                 <FilterX />
