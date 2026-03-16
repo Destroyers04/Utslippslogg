@@ -8,8 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import type { UnitData } from "@/api/types";
 import { TableFilter } from "@/components/site/table/filter";
-import { MeasurementChart } from "@/components/site/panel/chart";
 import { useQuery } from "@tanstack/react-query";
+import { StationCardList } from "@/components/site/station-card-list";
 export const Route = createFileRoute("/_authenticated/site/$siteId")({
   staleTime: 0,
   // Check if user has correct auth, save site to context if valid
@@ -32,8 +32,7 @@ function SitePage() {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [filteredUnits, setFilteredUnits] = useState<UnitData[]>([]);
-
-  const { isPending, error, data } = useQuery({
+const { isPending, error, data } = useQuery({
     queryKey: ["siteMeasurementData", site.site_id, page, limit, filteredUnits],
     queryFn: () =>
       getSiteMeasurementsData(
@@ -51,11 +50,9 @@ function SitePage() {
   return (
     <div className="max-w-screen-xl mx-auto mt-8 px-8">
       <SiteHeader site={site} active={active} />
-      <Card className="my-8">
-        <CardContent>
-          <MeasurementChart measurements={measurements} units={units} />
-        </CardContent>
-      </Card>
+      <div className="my-8">
+        <StationCardList />
+      </div>
       <Card className="my-8">
         <CardContent>
           <TableFilter
